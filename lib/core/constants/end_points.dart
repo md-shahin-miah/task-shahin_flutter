@@ -1,5 +1,4 @@
-
-import '../../config/app_mode.dart';
+import '../config/app_mode.dart';
 
 class EndPoints {
 
@@ -13,6 +12,8 @@ class EndPoints {
   // others
 
   static const String loginUrl = 'api/app/student/auth/login';
+  static const String feedUrl = 'api/app/teacher/community/getFeed?status=feed&';
+  static const String createFeedPostUrl = 'api/app/teacher/community/createFeedWithUpload?';
 
 
 }
