@@ -59,7 +59,8 @@ class AuthViewModel extends StateNotifier<DataState> {
         print("----------login res------->${response.body}");
 
         if (response.statusCode == 200) {
-            SharePreferenceUtil.setUserToken("");
+          SharePreferenceUtil.setUserToken("");
+          SharePreferenceUtil.setRememberMe(false);
             state = DataState.success(data: response);
 
         } else {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
 
@@ -50,10 +51,7 @@ class LogoutDialog extends StatelessWidget {
                         ref
                             .read(authProviderLogin.notifier)
                             .logOut();
-                        SharePreferenceUtil.setUserToken("");
-                        SharePreferenceUtil.setRememberMe(false);
-
-                        Navigator.of(context).pop(true);
+                       context.goToLoginPage();
                       },
                       child: Text(
                         'Yes',

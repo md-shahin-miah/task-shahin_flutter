@@ -200,15 +200,15 @@ class LoginScreenView extends ConsumerWidget {
                                 onPressed: () {
                                   debugPrint("Sign In clicked");
 
-                                  ref
-                                      .read(authProviderLogin.notifier)
-                                      .login("stu@test.io", "123456");
+                                  // ref
+                                  //     .read(authProviderLogin.notifier)
+                                  //     .login("stu@test.io", "123456");
 
                                   SharePreferenceUtil.setRememberMe(ref.read(rememberMeProvider));
 
-                                  // ref.read(authProviderLogin.notifier).login(
-                                  //     _userEmailController.text,
-                                  //     _userPassController.text);
+                                  ref.read(authProviderLogin.notifier).login(
+                                      _userEmailController.text,
+                                      _userPassController.text);
                                 },
                                 child: const Text(
                                   "Login",
