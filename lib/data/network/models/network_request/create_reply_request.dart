@@ -7,14 +7,13 @@ class CreateReplyRequest extends Equatable {
   String? feed_user_id="";
   String? comment_txt="";
   String? commentSource="";
+  String? parrent_id="";
 
-  String? parent_id="";
-
-  CreateReplyRequest({this.feed_id, this.feed_user_id,this.comment_txt,this.commentSource,this.parent_id});
+  CreateReplyRequest({this.feed_id, this.feed_user_id,this.comment_txt,this.commentSource,this.parrent_id});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [ feed_id, feed_user_id,comment_txt,commentSource,parent_id];
+  List<Object?> get props => [ feed_id, feed_user_id,comment_txt,commentSource,parrent_id];
 
 
   factory CreateReplyRequest.fromJson(Map<String, dynamic> json) => CreateReplyRequest(
@@ -22,7 +21,7 @@ class CreateReplyRequest extends Equatable {
     feed_user_id: json['feed_user_id'] as String,
     comment_txt: json['comment_txt'] as String,
     commentSource: json['commentSource'] as String,
-    parent_id: json['parent_id'] as String,
+    parrent_id: json['parrent_id'] as String,
 
   );
 
@@ -32,7 +31,7 @@ class CreateReplyRequest extends Equatable {
     data['feed_user_id'] = feed_user_id;
     data['comment_txt'] = comment_txt;
     data['commentSource'] = commentSource;
-    data['parent_id'] = parent_id;
+    data['parrent_id'] = parrent_id;
 
     return data;
   }

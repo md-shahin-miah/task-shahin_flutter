@@ -27,7 +27,7 @@ class ListItem extends StatelessWidget {
     final timeAgo = timeago.format(dateTime);
     var like = feedResponse.like?.reactionType ?? "";
     var selectedIndexReact = getSelectedIndex(like ?? "");
-    var youTxt=selectedIndexReact.isNegative?"":selectedIndexReact>1?"You and ${reactions.length} other":"You likes this";
+    var youTxt=selectedIndexReact.isNegative?"":reactions.length>2?"You and ${reactions.length} other":"You likes this";
 
     if (selectedIndexReact > -1) {
       reactionCu = reactions.elementAt(selectedIndexReact);
@@ -167,7 +167,7 @@ class ListItem extends StatelessWidget {
                     Text(
                       '${feedResponse.commentCount} Comments',
                       style: const TextStyle(
-                        color: AppColors.textColorBlack,
+                        color: AppColors.textColorBlack2,
                       ),
                     ),
                   )
@@ -218,7 +218,8 @@ class ListItem extends StatelessWidget {
                 Consumer(
                   builder: (context, ref, child) => InkWell(
                     onTap: () {
-                      ref.invalidate(replyStateProvider);
+                      // ref.invalidate(replyStateProvider);
+                      // conWriteHere.text="";
                       showCommentBottomSheet(context,feedResponse,youTxt);
                     },
                     child: buildReactionsIcon(

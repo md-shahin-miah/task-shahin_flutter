@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
+import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 
@@ -46,21 +47,31 @@ class CreatePostScreen extends ConsumerWidget {
                       .maybeWhen(orElse: () {
                     return TextButton(
                       onPressed: () {
-                        ref
-                            .read(createFeedStateNotifierProvider.notifier)
-                            .createPost(CreatePostRequest(
-                                community_id: "2914",
-                                space_id: "5883",
-                                activity_type: "group",
-                                bg_color: ref.read(selectedGradiant) > 0
-                                    ? ColorConstantLinear
-                                            .feedBackGroundGradientColors[
-                                        ref.read(selectedGradiant)]
-                                    : "",
-                                feed_txt: _textController.text,
-                                is_background:
-                                    ref.read(selectedGradiant) > 0 ? 1 : 0,
-                                uploadType: "text"));
+
+                        if(_textController.text.isNotEmpty){
+                          ref
+                              .read(createFeedStateNotifierProvider.notifier)
+                              .createPost(CreatePostRequest(
+                              community_id: "2914",
+                              space_id: "5883",
+                              activity_type: "group",
+                              bg_color: ref.read(selectedGradiant) > 0
+                                  ? ColorConstantLinear
+                                  .feedBackGroundGradientColors[
+                              ref.read(selectedGradiant)]
+                                  : "",
+                              feed_txt: _textController.text,
+                              is_background:
+                              ref.read(selectedGradiant) > 0 ? 1 : 0,
+                              uploadType: "text"));
+                        }
+                        else{
+                          SnackBarService.showSnackBar(title: "Text required", backgroundColor: AppColors.colorError);
+
+
+                        }
+
+
                       },
                       child: const Text(
                         "Create",
@@ -98,14 +109,6 @@ class CreatePostScreen extends ConsumerWidget {
               child: GradientColorSelector(
                 gradients: ColorConstantLinear.gradientsColor,
 
-                // selectedGradient: _selectedGradient,
-                // onGradientSelected: (gradient, isCenterAligned) {
-                //   setState(() {
-                //     _selectedGradient = gradient;
-                //     _textAlign = isCenterAligned ? TextAlign.center : TextAlign.start;
-                //     _fontWeight = isCenterAligned ? FontWeight.bold : FontWeight.normal;
-                //   });
-                // },
                 onToggleList: () {},
               ),
             ),
@@ -125,12 +128,8 @@ class CreatePostScreen extends ConsumerWidget {
         },
         error: (err, _) {
           debugPrint(err);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(err),
-              backgroundColor: AppColors.colorError,
-            ),
-          );
+          SnackBarService.showSnackBar(title: err, backgroundColor: AppColors.colorError);
+
         },
         orElse: () {},
       );

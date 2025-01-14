@@ -12,9 +12,9 @@ class AppButtons {
     Color? textColor,
   }) {
     final decoration = BoxDecoration(
-      color: fillColor ?? (onTap == null ? Colors.grey[300] : AppColors.primary),
+      color: fillColor ?? (onTap == null ? Colors.grey[300] : AppColors.primaryColor),
       border: Border.all(
-        color: fillColor ?? (onTap == null ? Colors.grey[300]! : AppColors.primary),
+        color: fillColor ?? (onTap == null ? Colors.grey[300]! : AppColors.primaryColor),
       ),
       borderRadius: BorderRadius.circular(12),
       boxShadow: [AppShadows.primary],
@@ -25,13 +25,13 @@ class AppButtons {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        highlightColor: textColor?.withOpacity(0.15) ?? AppColors.text.withOpacity(0.15),
+        highlightColor: textColor?.withOpacity(0.15) ?? AppColors.primaryTextColor.withOpacity(0.15),
         child: SizedBox(
           height: 50,
           width: width ?? double.infinity,
           child: Center(
             child: DefaultTextStyle.merge(
-              style: AppTextStyles.bold.copyWith(color: textColor ?? AppColors.white),
+              style: AppTextStyles.bold.copyWith(color: textColor ?? AppColors.primaryTextColor),
               child: child,
             ),
           ),

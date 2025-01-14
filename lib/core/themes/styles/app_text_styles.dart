@@ -20,30 +20,30 @@ class AppTextStyles {
   static TextStyle h1 = base.copyWith(
     fontSize: 34,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: AppColors.textColorBlack2,
   );
 
   static TextStyle h2 = base.copyWith(
     fontSize: 22,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: AppColors.textColorBlack2,
   );
   static TextStyle h20 = base.copyWith(
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: AppColors.textColorBlack2,
   );
 
   static TextStyle h3 = base.copyWith(
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: AppColors.textColorBlack2,
   );
 
   static TextStyle p1 = base.copyWith(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppColors.text,
+    color: AppColors.textColorBlack2,
   );
 
   static TextStyle p2 = base.copyWith(
@@ -54,7 +54,7 @@ class AppTextStyles {
   static TextStyle p3 = base.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppColors.text,
+    color: AppColors.textColorBlack2,
   );
 
   static TextStyle p4 = base.copyWith(

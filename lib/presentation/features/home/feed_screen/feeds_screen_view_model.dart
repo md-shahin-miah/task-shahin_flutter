@@ -23,7 +23,7 @@ final feedProvider = Provider<FeedScreenViewModel>((ref) => FeedScreenViewModel(
 final createFeedStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
 final createCommentStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
 final createReplyStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
-final createOrDeleteReactionStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) =>  FeedScreenViewModel(ref));
+final createOrDeleteReactionStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
 
 class FeedScreenViewModel extends StateNotifier<DataState> {
   Ref ref;
@@ -40,8 +40,6 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
       } else {
         var response = await ref.read(feedRepoProvider).getFeed(feedRequest);
 
-        print("----------getFeedData res------->${json.decode(response.body)}");
-
         if (response.statusCode == 200) {
           feedResponseList = FeedResponseList.fromJson(json.decode(response.body));
         } else {
@@ -53,6 +51,7 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     }
     return feedResponseList;
   }
+
   Future<ReplyResponseList?> getReply(String commentID) async {
     final result = await connectivity.checkConnectivity();
 
@@ -62,10 +61,12 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
       } else {
         var response = await ref.read(feedRepoProvider).getReply(commentID);
 
-        print("----------getReply res------->${json.decode(response.body)}");
+        // print('--------getReply---->' + json.decode(response.body));
 
         if (response.statusCode == 200) {
-          replyResponseList = ReplyResponseList.fromJson(json.decode(response.body));
+          if (response.body != null) {
+            replyResponseList = ReplyResponseList.fromJson(json.decode(response.body));
+          }
         } else {
           throw Exception("Failed, please try again.");
         }
@@ -75,6 +76,7 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     }
     return replyResponseList;
   }
+
   Future<CommentResponseList?> getComment(String feedId) async {
     final result = await connectivity.checkConnectivity();
 
@@ -83,8 +85,6 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
       if (result == ConnectivityResult.none) {
       } else {
         var response = await ref.read(feedRepoProvider).getComment(feedId);
-
-        print("----------getComment res------->${json.decode(response.body)}");
 
         if (response.statusCode == 200) {
           commentResponseList = CommentResponseList.fromJson(json.decode(response.body));
@@ -108,37 +108,6 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
       } else {
         var response = await ref.read(feedRepoProvider).createPost(createPostRequest);
 
-        print("----------createPost res------->${json.decode(response.body)}");
-
-        if (response.statusCode == 200) {
-        var feedResponse = FeedResponse.fromJson(json.decode(response.body));
-
-        state = DataState.success(data: feedResponse);
-        } else {
-          state = const DataState.error(message: "Failed to create");
-        }
-      }
-    } on SocketException catch (e) {
-      state = DataState.error(message: 'Failed to load landing data: ${e.message}');
-
-      throw Exception('Failed to load landing data: ${e.message}');
-    }
-  }
-
-
-  Future<void> createReply(CreateReplyRequest createReplyRequest) async {
-    state = const DataState.loading();
-    final result = await connectivity.checkConnectivity();
-
-    // FeedResponse? feedResponse;
-    try {
-      if (result == ConnectivityResult.none) {
-        //local db
-      } else {
-        var response = await ref.read(feedRepoProvider).createReply(createReplyRequest);
-
-        print("----------createReply res------->${json.decode(response.body)}");
-
         if (response.statusCode == 200) {
           var feedResponse = FeedResponse.fromJson(json.decode(response.body));
 
@@ -154,17 +123,37 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     }
   }
 
+  Future<void> createReply(CreateReplyRequest createReplyRequest) async {
+    state = const DataState.loading();
+    final result = await connectivity.checkConnectivity();
+
+    try {
+      if (result == ConnectivityResult.none) {
+        //local db
+      } else {
+        var response = await ref.read(feedRepoProvider).createReply(createReplyRequest);
+
+        if (response.statusCode == 200) {
+          state = DataState.success(data: response);
+        } else {
+          state = const DataState.error(message: "Failed to create");
+        }
+      }
+    } on SocketException catch (e) {
+      state = DataState.error(message: 'Failed to load landing data: ${e.message}');
+
+      throw Exception('Failed to load landing data: ${e.message}');
+    }
+  }
+
   Future<void> logout(CreatePostRequest createPostRequest) async {
     state = const DataState.loading();
     final result = await connectivity.checkConnectivity();
 
-    // FeedResponse? feedResponse;
     try {
       if (result == ConnectivityResult.none) {
       } else {
         var response = await ref.read(feedRepoProvider).createPost(createPostRequest);
-
-        print("----------createPost res------->${json.decode(response.body)}");
 
         if (response.statusCode == 200) {
           var feedResponse = FeedResponse.fromJson(json.decode(response.body));
@@ -191,12 +180,8 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
       } else {
         var response = await ref.read(feedRepoProvider).createOrDeletedReaction(createOrDeleteReactionRequest);
 
-        print("----------createOrDeleteReaction res------->${json.decode(response.body)}");
-
         if (response.statusCode == 200) {
-        // var feedResponse = FeedResponse.fromJson(json.decode(response.body));
-
-        state = DataState.success(data: response);
+          state = DataState.success(data: response);
         } else {
           state = const DataState.error(message: "Failed to create");
         }
@@ -212,13 +197,10 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     state = const DataState.loading();
     final result = await connectivity.checkConnectivity();
 
-    // FeedResponse? feedResponse;
     try {
       if (result == ConnectivityResult.none) {
       } else {
         var response = await ref.read(feedRepoProvider).createComment(createCommentRequest);
-
-        print("----------createPost res------->${json.decode(response.body)}");
 
         if (response.statusCode == 200) {
           var feedResponse = FeedResponse.fromJson(json.decode(response.body));
@@ -234,5 +216,4 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
       throw Exception('Failed to load landing data: ${e.message}');
     }
   }
-
 }

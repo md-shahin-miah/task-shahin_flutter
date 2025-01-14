@@ -10,7 +10,7 @@ class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.textColorWhite,
+      backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -53,9 +53,9 @@ class LogoutDialog extends StatelessWidget {
                             .logOut();
                        context.goToLoginPage();
                       },
-                      child: Text(
+                      child: const Text(
                         'Yes',
-                        style: TextStyle(color: AppColors.creamColor),
+                        style: TextStyle(color: AppColors.primaryColor),
                       ),
                     ),
                   ),

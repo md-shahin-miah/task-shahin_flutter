@@ -48,10 +48,10 @@ class Utils{
     final Uri _url = Uri.parse(url);
     try{
       if (!await launchUrl(_url)) {
-        throw SnackbarService.showSnackbar(title: "Could not launch invalid url", backgroundColor: AppColors.colorError);
+        throw SnackBarService.showSnackBar(title: "Could not launch invalid url", backgroundColor: AppColors.colorError);
       }
     }catch(e){
-      SnackbarService.showSnackbar(title: "Could not launch invalid url", backgroundColor: AppColors.colorError);
+      SnackBarService.showSnackBar(title: "Could not launch invalid url", backgroundColor: AppColors.colorError);
     }
 
   }

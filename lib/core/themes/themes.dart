@@ -10,7 +10,7 @@ import 'package:shahin_appify_task/core/themes/styles/app_text_styles.dart';
 class AppThemes {
   static ThemeData primary({bool isDark = false}) => ThemeData(
         useMaterial3: true,
-        primaryColor: AppColors.primary,
+        primaryColor: AppColors.primaryColor,
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: Colors.indigo,
         ),
@@ -38,9 +38,9 @@ class AppThemes {
           elevation: 0,
           backgroundColor: AppColors.background,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
-          iconTheme: const IconThemeData(color: AppColors.primary),
+          iconTheme: const IconThemeData(color: AppColors.primaryColor),
           titleTextStyle: AppTextStyles.h3.copyWith(
-            color: AppColors.text,
+            color: AppColors.textColorBlack2,
           ),
         ),
         tabBarTheme: TabBarTheme(

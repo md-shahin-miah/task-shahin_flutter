@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,18 +10,23 @@ import 'package:shahin_appify_task/data/providers/navigation_provider.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/widget/logout_dialog.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
+import 'package:swipe_refresh/swipe_refresh.dart';
+
+import '../feed_screen/widget/comment_bottom_sheet.dart';
 
 final selectedTabIndex = StateProvider((ref) => 0);
 
 class HomeScreenView extends ConsumerWidget {
   HomeScreenView({super.key});
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.primaryColor,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: Image.asset(
@@ -33,10 +40,7 @@ class HomeScreenView extends ConsumerWidget {
           children: [
             Text(
               AppConstant.pythonTitle,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: AppColors.txtColor2,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, color: AppColors.textColorGray2, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 2),
             Text(
@@ -55,7 +59,7 @@ class HomeScreenView extends ConsumerWidget {
               print("-----------> $value");
             },
             children: [
-              FeedScreenView(ScrollController()),
+              FeedScreenView(),
             ],
           ),
         ],
@@ -65,14 +69,14 @@ class HomeScreenView extends ConsumerWidget {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.groups,
-              color: AppColors.primary,
+              color: AppColors.primaryColor,
             ),
             label: AppConstant.community,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.output,
-              color: AppColors.primary,
+              color: AppColors.primaryColor,
             ),
             label: AppConstant.logOut,
           ),

@@ -12,6 +12,7 @@ class EndPoints {
   // others
 
   static const String loginUrl = 'api/app/student/auth/login';
+  static const String logoutUrl = 'api/app/student/auth/logout';
   static const String feedUrl = 'api/app/teacher/community/getFeed?status=feed&';
   static const String createFeedPostUrl = 'api/app/teacher/community/createFeedWithUpload?';
   static const String createCommentUrl = 'api/app/student/comment/createComment';
