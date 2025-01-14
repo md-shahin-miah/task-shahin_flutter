@@ -44,7 +44,7 @@ class Utils{
     String date = '${dateTime.year}-${dateTime.month.toString().padLeft(2,'0')}-${dateTime.day.toString().padLeft(2,'0')}';
     return date;
   }
-  Future<void> loadUrl(url) async {
+ static Future<void> loadUrl(url) async {
     final Uri _url = Uri.parse(url);
     try{
       if (!await launchUrl(_url)) {

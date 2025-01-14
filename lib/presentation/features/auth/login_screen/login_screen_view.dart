@@ -124,6 +124,7 @@ class LoginScreenView extends ConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           CustomTextField(
+                            textColor: AppColors.white,
                             controller: _userEmailController,
                             hintText: "Enter your email",
                             isPassword: false,
@@ -140,6 +141,7 @@ class LoginScreenView extends ConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           CustomTextField(
+                            textColor: AppColors.white,
                             controller: _userPassController,
                             hintText: "Enter your password",
                             hintColor: AppColors.lightGray,

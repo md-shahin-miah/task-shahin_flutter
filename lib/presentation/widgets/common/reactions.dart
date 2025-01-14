@@ -7,7 +7,7 @@ import 'package:shahin_appify_task/data/network/models/network_response/feed_res
 final defaultInitialReaction = Reaction<String>(
   value: null,
   icon: buildReactionsIcon(
-    AppImageAssets.like,
+    AppImageAssets.unLike,
     const Text(
       'Like',
       style: TextStyle(
@@ -20,7 +20,7 @@ final defaultInitialReaction = Reaction<String>(
 final defaultInitialcommentReaction = Reaction<String>(
   value: null,
   icon: buildReactionsIcon(
-    AppImageAssets.like,
+    AppImageAssets.unLike,
     const Text(
       'Like',
       style: TextStyle(fontSize: 16, color: AppColors.black),

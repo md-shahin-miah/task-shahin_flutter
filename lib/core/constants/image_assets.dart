@@ -8,6 +8,7 @@ class AppImageAssets{
 
 
   static const String like = 'assets/icons/like.png';
+  static const String unLike = 'assets/icons/like_des.png';
   static const String likeGray = 'assets/icons/like_gray.png';
   static const String love = 'assets/icons/love.png';
   static const String haha = 'assets/icons/haha.png';
