@@ -16,5 +16,11 @@ final authRepoProvider = Provider((ref) => AuthRepositoryImpl());
     return await NetworkService.postRequest(EndPoints.loginUrl, loginRequest);
   }
 
+  @override
+  Future logout() async {
+   return await NetworkService.postRequest(EndPoints.loginUrl,"");
+
+  }
+
 
  }

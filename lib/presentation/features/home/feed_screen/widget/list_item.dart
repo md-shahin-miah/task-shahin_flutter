@@ -1,17 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/horizontal_reaction_list.dart';
 
 import '../../../../../core/themes/styles/app_colors.dart';
+import '../../../../../data/network/models/network_request/create_delete_reaction_request.dart';
 import '../../../../../data/network/models/network_response/feed_response.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../widgets/common/reactions.dart';
+import '../feeds_screen_view_model.dart';
 
 class ListItem extends StatelessWidget {
   FeedResponse feedResponse;
+  Reaction<String>? reactionCu;
 
   ListItem(this.feedResponse, {super.key});
 
@@ -19,6 +25,14 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime dateTime = DateTime.parse(feedResponse.createdAt.toString());
     final timeAgo = timeago.format(dateTime);
+    var like = feedResponse.like?.reactionType ?? "";
+    var selectedIndexReact = getSelectedIndex(like ?? "");
+    var youTxt=selectedIndexReact.isNegative?"":selectedIndexReact>1?"You and ${reactions.length} other":"You likes this";
+
+    if (selectedIndexReact > -1) {
+      reactionCu = reactions.elementAt(selectedIndexReact);
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
@@ -58,7 +72,8 @@ class ListItem extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(
                       timeAgo,
-                      style: TextStyle(fontSize: 12, color: AppColors.textColorGray),
+                      style: TextStyle(
+                          fontSize: 12, color: AppColors.textColorGray),
                     ),
                   ],
                 ),
@@ -74,7 +89,9 @@ class ListItem extends StatelessWidget {
             ),
             const SizedBox(height: 5),
 
-            feedResponse.isBackground == 0 ? textFeed(feedResponse) : const SizedBox(),
+            feedResponse.isBackground == 0
+                ? textFeed(feedResponse)
+                : const SizedBox(),
             const SizedBox(height: 10),
             // Example image for alternating items
             Container(
@@ -83,8 +100,12 @@ class ListItem extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: feedResponse.isBackground == 1
-                    ? ColorConstantLinear.findIndex(feedResponse.bgColor) != -1
-                        ? ColorConstantLinear.gradientsColor[ColorConstantLinear.findIndex(feedResponse.bgColor)]
+                    ? ColorConstantLinear.findIndex(
+                                feedResponse.bgColor ?? "") !=
+                            -1
+                        ? ColorConstantLinear.gradientsColor[
+                            ColorConstantLinear.findIndex(
+                                feedResponse.bgColor ?? "")]
                         : null
                     : null,
               ),
@@ -125,15 +146,20 @@ class ListItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      makeLike(),
-                      Transform.translate(offset: const Offset(-5, 0), child: makeLove()),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "100",
-                        style: TextStyle(fontSize: 15, color: Colors.grey[800]),
-                      )
+                      feedResponse.likeCount != null? feedResponse.likeCount!> 0
+                          ? SizedBox(
+                              height: 25,
+                              child: DynamicItemDisplay(
+                                  reactions: getListSelectedReactions(
+                                      feedResponse.likeType),
+                                  selected: selectedIndexReact),
+                            )
+                          : const SizedBox():const SizedBox(),
+
+                      // Text(
+                      //  '${ feedResponse.likeType.length}',
+                      //   style: TextStyle(fontSize: 15, color: Colors.grey[800]),
+                      // )
                     ],
                   ),
                   buildReactionsIcon(
@@ -159,24 +185,50 @@ class ListItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: ReactionButton<String>(
-                    itemSize: const Size.square(40),
-                    onReactionChanged: (Reaction<String>? reaction) {
-                      //do api call here
-                    },
-                    reactions: reactions,
-                    // placeholder: rtnindex != -1 ? reactions[rtnindex] : defaultInitialReaction,
-                    selectedReaction: reactions.first,
+                Consumer(
+                  builder: (context, ref, child) => Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: ReactionButton<String>(
+                      itemSize: const Size.square(40),
+                      onReactionChanged: (Reaction<String>? reaction) {
+                        var value = reaction?.value?.toUpperCase();
+                        value ??= feedResponse.like?.reactionType?.toUpperCase();
+                        value??="Like";
+                        print("---------reaction------->$value");
+
+                        ref
+                            .read(createOrDeleteReactionStateNotifierProvider.notifier)
+                            .createOrDeleteReaction(
+                                CreateOrDeleteReactionRequest(
+                                    feed_id: feedResponse.id.toString(),
+                                    action:  "deleteOrCreate",
+                                    reaction_type: value,
+                                    reactionSource: "COMMUNITY"));
+                        //do api call here
+                      },
+                      reactions: reactions,
+                      placeholder: selectedIndexReact > -1
+                          ? reactionCu!
+                          : defaultInitialcommentReaction,
+                      selectedReaction:defaultInitialcommentReaction,
+                    ),
                   ),
                 ),
-                buildReactionsIcon(
-                  AppImageAssets.commentFilled,
-                  const Text(
-                    'Comment',
-                    style: TextStyle(
-                      color: Color(0XFF000000),
+                Consumer(
+                  builder: (context, ref, child) => InkWell(
+                    onTap: () {
+                      ref.invalidate(replyStateProvider);
+                      showCommentBottomSheet(context,feedResponse,youTxt);
+                    },
+                    child: buildReactionsIcon(
+                      AppImageAssets.commentFilled,
+                      const Text(
+                        'Comment',
+                        style: TextStyle(
+                          color: Color(0XFF000000),
+                        ),
+                      ),
                     ),
                   ),
                 )

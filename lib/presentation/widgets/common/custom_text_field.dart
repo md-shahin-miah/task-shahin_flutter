@@ -4,6 +4,7 @@ import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final Color hintColor;
   final bool isPassword;
   final bool? obscureText;
   final VoidCallback? toggleObscure;
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget {
     required this.controller,
     required this.hintText,
     required this.isPassword,
+    required this.hintColor,
     this.obscureText,
     this.toggleObscure,
     Key? key, this.isBorder,
@@ -23,7 +25,7 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: obscureText ?? false,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: AppColors.black),
       decoration: InputDecoration(
         border: isBorder!?null:InputBorder.none,
         filled: true,
@@ -31,7 +33,7 @@ class CustomTextField extends StatelessWidget {
         contentPadding:
         const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.grey),
+        hintStyle:  TextStyle(color: hintColor),
         suffixIcon: isPassword
             ? IconButton(
           icon: Icon(

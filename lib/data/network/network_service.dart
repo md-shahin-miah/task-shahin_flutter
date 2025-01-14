@@ -101,6 +101,30 @@ log("url ->> ${EndPoints.baseUrl}$endPoint ->>>>> $response");
     print("-----------------sts >${response.statusCode}");
     return response;
   }
+  static postRequestWithPath(String endPoint, body,String path, {bool requireToken = true}) async {
+    var accessToken = await SharePreferenceUtil.getUserToken();
+
+    var headers = {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    if (requireToken) {
+      var header = {"Authorization": "Bearer $accessToken"};
+      headers.addAll(header);
+    }
+
+    debugPrint('\nURL: ${EndPoints.baseUrl}$endPoint');
+    debugPrint("Headers: $headers");
+    debugPrint("body: post -------- $body");
+    debugPrint('Request Body: ${jsonEncode(body)}\n');
+
+    Response response = await post(Uri.parse(EndPoints.baseUrl + endPoint),
+        body: jsonEncode(body), headers: headers);
+    print("-----------------sts >${response.statusCode}");
+    return response;
+  }
 
   static multiPartRequest(String endPoint, String methodName,
       {Map<String, String>? body,

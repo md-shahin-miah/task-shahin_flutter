@@ -14,6 +14,11 @@ class EndPoints {
   static const String loginUrl = 'api/app/student/auth/login';
   static const String feedUrl = 'api/app/teacher/community/getFeed?status=feed&';
   static const String createFeedPostUrl = 'api/app/teacher/community/createFeedWithUpload?';
+  static const String createCommentUrl = 'api/app/student/comment/createComment';
+  static const String getCommentUrl = 'api/app/student/comment/getComment/';
+  static const String createOrDeleteReactionUrl = 'api/app/teacher/community/createLike?';
+  static const String adReply = 'api/app/student/comment/createComment';
+  static const String getReply = 'api/app/student/comment/getReply/';
 
 
 }

@@ -5,9 +5,9 @@ import 'package:shahin_appify_task/core/constants/app_constant.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/data/providers/navigation_provider.dart';
+import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
+import 'package:shahin_appify_task/presentation/features/auth/login_screen/widget/logout_dialog.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view.dart';
-
-
 
 final selectedTabIndex = StateProvider((ref) => 0);
 
@@ -33,7 +33,10 @@ class HomeScreenView extends ConsumerWidget {
           children: [
             Text(
               AppConstant.pythonTitle,
-              style: TextStyle(fontSize: 18, color: AppColors.txtColor2, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 18,
+                  color: AppColors.txtColor2,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 2),
             Text(
@@ -50,7 +53,6 @@ class HomeScreenView extends ConsumerWidget {
             controller: ref.watch(uiProviders).pageController,
             onPageChanged: (value) {
               print("-----------> $value");
-
             },
             children: [
               FeedScreenView(ScrollController()),
@@ -79,9 +81,13 @@ class HomeScreenView extends ConsumerWidget {
         backgroundColor: AppColors.white,
         selectedItemColor: AppColors.primaryColor,
         onTap: (value) {
-
-          ref.read(selectedTabIndex.notifier).state=value;
+          ref.read(selectedTabIndex.notifier).state = value;
           ref.read(uiProviders.notifier).setSelectedMenuOpt(value);
+
+          if (value == 1) {
+            showLogoutConfirmDialog(context);
+          }
+
           if (kDebugMode) {
             print("-------bottom------->$value");
           }

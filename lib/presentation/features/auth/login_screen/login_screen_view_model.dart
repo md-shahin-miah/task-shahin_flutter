@@ -48,4 +48,28 @@ class AuthViewModel extends StateNotifier<DataState> {
       state = DataState.error(message: e.toString());
     }
   }
+  Future<void> logOut() async {
+    state = const DataState.loading();
+    try {
+      final result = await connectivity.checkConnectivity();
+
+      if (result != ConnectivityResult.none) {
+        var response = await ref.read(authRepoProvider).logout();
+
+        print("----------login res------->${response.body}");
+
+        if (response.statusCode == 200) {
+            SharePreferenceUtil.setUserToken("");
+            state = DataState.success(data: response);
+
+        } else {
+          state = const DataState.error(message: "Logout, please try again.");
+        }
+      } else {
+        state = const DataState.error(message: "No internet Connection");
+      }
+    } catch (e) {
+      state = DataState.error(message: e.toString());
+    }
+  }
 }

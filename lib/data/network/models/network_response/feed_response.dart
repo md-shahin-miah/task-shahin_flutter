@@ -14,6 +14,31 @@ class FeedResponseList{
 
   }
 
+
+class PurpleMeta {
+  PurpleMeta({
+    required this.views,
+  });
+
+  final num? views;
+
+  factory PurpleMeta.fromJson(Map<String, dynamic> json){
+    return PurpleMeta(
+      views: json["views"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "views": views,
+  };
+
+  @override
+  String toString(){
+    return "$views, ";
+  }
+}
+
+
 class FeedResponse {
   FeedResponse({
     required this.id,
@@ -57,13 +82,13 @@ class FeedResponse {
     required this.pic,
     required this.uid,
     required this.isPrivateChat,
-    required this.user,
-    required this.group,
+    required this.likeType,
     required this.poll,
     required this.like,
-    required this.likeType,
-    required this.follow,
+    required this.group,
+    required this.user,
     required this.savedPosts,
+    required this.follow,
     required this.comments,
     required this.meta,
   });
@@ -91,7 +116,7 @@ class FeedResponse {
   final DateTime? updatedAt;
   final String? feedPrivacy;
   final num? isBackground;
-  final dynamic bgColor;
+  final String? bgColor;
   final dynamic pollId;
   final dynamic lessonId;
   final int? spaceId;
@@ -109,13 +134,13 @@ class FeedResponse {
   final String? pic;
   final int? uid;
   final num? isPrivateChat;
-  final User? user;
-  final dynamic group;
+  final List<LikeType> likeType;
   final dynamic poll;
-  final dynamic like;
-  final List<dynamic> likeType;
-  final dynamic follow;
+  final Like? like;
+  final dynamic group;
+  final User? user;
   final dynamic savedPosts;
+  final dynamic follow;
   final List<dynamic> comments;
   final PurpleMeta? meta;
 
@@ -162,13 +187,13 @@ class FeedResponse {
       pic: json["pic"],
       uid: json["uid"],
       isPrivateChat: json["is_private_chat"],
-      user: json["user"] == null ? null : User.fromJson(json["user"]),
-      group: json["group"],
+      likeType: json["likeType"] == null ? [] : List<LikeType>.from(json["likeType"]!.map((x) => LikeType.fromJson(x))),
       poll: json["poll"],
-      like: json["like"],
-      likeType: json["likeType"] == null ? [] : List<dynamic>.from(json["likeType"]!.map((x) => x)),
-      follow: json["follow"],
+      like: json["like"] == null ? null : Like.fromJson(json["like"]),
+      group: json["group"],
+      user: json["user"] == null ? null : User.fromJson(json["user"]),
       savedPosts: json["savedPosts"],
+      follow: json["follow"],
       comments: json["comments"] == null ? [] : List<dynamic>.from(json["comments"]!.map((x) => x)),
       meta: json["meta"] == null ? null : PurpleMeta.fromJson(json["meta"]),
     );
@@ -216,45 +241,178 @@ class FeedResponse {
     "pic": pic,
     "uid": uid,
     "is_private_chat": isPrivateChat,
-    "user": user?.toJson(),
-    "group": group,
+    "likeType": likeType.map((x) => x?.toJson()).toList(),
     "poll": poll,
-    "like": like,
-    "likeType": likeType.map((x) => x).toList(),
-    "follow": follow,
+    "like": like?.toJson(),
+    "group": group,
+    "user": user?.toJson(),
     "savedPosts": savedPosts,
+    "follow": follow,
     "comments": comments.map((x) => x).toList(),
     "meta": meta?.toJson(),
   };
 
   @override
   String toString(){
-    return "$id, $schoolId, $userId, $courseId, $communityId, $groupId, $feedTxt, $status, $slug, $title, $activityType, $isPinned, $fileType, $files, $likeCount, $commentCount, $shareCount, $shareId, $metaData, $createdAt, $updatedAt, $feedPrivacy, $isBackground, $bgColor, $pollId, $lessonId, $spaceId, $videoId, $streamId, $blogId, $scheduleDate, $timezone, $isAnonymous, $meetingId, $sellerId, $publishDate, $isFeedEdit, $name, $pic, $uid, $isPrivateChat, $user, $group, $poll, $like, $likeType, $follow, $savedPosts, $comments, $meta, ";
+    return "$id, $schoolId, $userId, $courseId, $communityId, $groupId, $feedTxt, $status, $slug, $title, $activityType, $isPinned, $fileType, $files, $likeCount, $commentCount, $shareCount, $shareId, $metaData, $createdAt, $updatedAt, $feedPrivacy, $isBackground, $bgColor, $pollId, $lessonId, $spaceId, $videoId, $streamId, $blogId, $scheduleDate, $timezone, $isAnonymous, $meetingId, $sellerId, $publishDate, $isFeedEdit, $name, $pic, $uid, $isPrivateChat, $likeType, $poll, $like, $group, $user, $savedPosts, $follow, $comments, $meta, ";
   }
 }
 
-class PurpleMeta {
-  PurpleMeta({
-    required this.views,
+class Like {
+  Like({
+    required this.id,
+    required this.feedId,
+    required this.userId,
+    required this.reactionType,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.isAnonymous,
+    required this.meta,
   });
 
-  final num? views;
+  final int? id;
+  final int? feedId;
+  final int? userId;
+  final String? reactionType;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final num? isAnonymous;
+  final MetaDataClass? meta;
 
-  factory PurpleMeta.fromJson(Map<String, dynamic> json){
-    return PurpleMeta(
-      views: json["views"],
+  factory Like.fromJson(Map<String, dynamic> json){
+    return Like(
+      id: json["id"],
+      feedId: json["feed_id"],
+      userId: json["user_id"],
+      reactionType: json["reaction_type"],
+      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      isAnonymous: json["is_anonymous"],
+      meta: json["meta"] == null ? null : MetaDataClass.fromJson(json["meta"]),
     );
   }
 
   Map<String, dynamic> toJson() => {
-    "views": views,
+    "id": id,
+    "feed_id": feedId,
+    "user_id": userId,
+    "reaction_type": reactionType,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+    "is_anonymous": isAnonymous,
+    "meta": meta?.toJson(),
   };
 
   @override
   String toString(){
-    return "$views, ";
+    return "$id, $feedId, $userId, $reactionType, $createdAt, $updatedAt, $isAnonymous, $meta, ";
   }
 }
 
+class MetaDataClass {
+  MetaDataClass({required this.json});
+  final Map<String,dynamic> json;
+
+  factory MetaDataClass.fromJson(Map<String, dynamic> json){
+    return MetaDataClass(
+        json: json
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+  };
+
+  @override
+  String toString(){
+    return "";
+  }
+}
+
+class LikeType {
+  LikeType({
+    required this.reactionType,
+    required this.feedId,
+    required this.meta,
+  });
+
+  final String? reactionType;
+  final int? feedId;
+  final MetaDataClass? meta;
+
+  factory LikeType.fromJson(Map<String, dynamic> json){
+    return LikeType(
+      reactionType: json["reaction_type"],
+      feedId: json["feed_id"],
+      meta: json["meta"] == null ? null : MetaDataClass.fromJson(json["meta"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "reaction_type": reactionType,
+    "feed_id": feedId,
+    "meta": meta?.toJson(),
+  };
+
+  @override
+  String toString(){
+    return "$reactionType, $feedId, $meta, ";
+  }
+}
+
+
+class User {
+  User({
+    required this.id,
+    required this.fullName,
+    required this.profilePic,
+    required this.isPrivateChat,
+    required this.expireDate,
+    required this.status,
+    required this.pauseDate,
+    required this.userType,
+    required this.meta,
+  });
+
+  final int? id;
+  final String? fullName;
+  final String? profilePic;
+  final num? isPrivateChat;
+  final dynamic expireDate;
+  final String? status;
+  final dynamic pauseDate;
+  final String? userType;
+  final MetaDataClass? meta;
+
+  factory User.fromJson(Map<String, dynamic> json){
+    return User(
+      id: json["id"],
+      fullName: json["full_name"],
+      profilePic: json["profile_pic"],
+      isPrivateChat: json["is_private_chat"],
+      expireDate: json["expire_date"],
+      status: json["status"],
+      pauseDate: json["pause_date"],
+      userType: json["user_type"],
+      meta: json["meta"] == null ? null : MetaDataClass.fromJson(json["meta"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "full_name": fullName,
+    "profile_pic": profilePic,
+    "is_private_chat": isPrivateChat,
+    "expire_date": expireDate,
+    "status": status,
+    "pause_date": pauseDate,
+    "user_type": userType,
+    "meta": meta?.toJson(),
+  };
+
+  @override
+  String toString(){
+    return "$id, $fullName, $profilePic, $isPrivateChat, $expireDate, $status, $pauseDate, $userType, $meta, ";
+  }
+}
 
 

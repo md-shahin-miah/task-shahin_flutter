@@ -85,6 +85,14 @@ class SharePreferenceUtil {
   static void setUserToken(String value) {
     setString(AppConstant.userToken, value);
   }
+  static isRememberMe() {
+    return getBool(AppConstant.remember, def: false);
+  }
+
+  static void setRememberMe(bool value) {
+    setBool(AppConstant.remember, value);
+  }
+
   //
   // static getUserId() {
   //   return getString(AppConstant.userId, def: "");

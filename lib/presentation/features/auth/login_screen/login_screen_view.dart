@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
+import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
+import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
 import '../../../widgets/common/custom_text_field.dart';
@@ -124,7 +126,9 @@ class LoginScreenView extends ConsumerWidget {
                           CustomTextField(
                             controller: _userEmailController,
                             hintText: "Enter your email",
-                            isPassword: false, isBorder: false,
+                            isPassword: false,
+                            isBorder: true,
+                            hintColor: AppColors.lightGray,
                           ),
                           const SizedBox(height: 20),
                           const Text(
@@ -138,6 +142,7 @@ class LoginScreenView extends ConsumerWidget {
                           CustomTextField(
                             controller: _userPassController,
                             hintText: "Enter your password",
+                            hintColor: AppColors.lightGray,
                             isPassword: true,
                             obscureText: ref.watch(passwordObscureTextSignUp),
                             toggleObscure: () {
@@ -145,10 +150,10 @@ class LoginScreenView extends ConsumerWidget {
                                       .watch(passwordObscureTextSignUp.notifier)
                                       .state =
                                   !ref
-                                      .watch(
-                                          passwordObscureTextSignUp.notifier)
+                                      .watch(passwordObscureTextSignUp.notifier)
                                       .state;
-                            }, isBorder: false,
+                            },
+                            isBorder: true,
                           ),
                           const SizedBox(height: 15),
                           Row(
@@ -163,9 +168,7 @@ class LoginScreenView extends ConsumerWidget {
                                       : AppColors.lightGray,
                                 ),
                                 onChanged: (bool? value) {
-                                  ref
-                                          .watch(rememberMeProvider.notifier)
-                                          .state =
+                                  ref.watch(rememberMeProvider.notifier).state =
                                       !ref
                                           .watch(rememberMeProvider.notifier)
                                           .state;
@@ -197,9 +200,15 @@ class LoginScreenView extends ConsumerWidget {
                                 onPressed: () {
                                   debugPrint("Sign In clicked");
 
-                                  ref.read(authProviderLogin.notifier).login(
-                                      _userEmailController.text,
-                                      _userPassController.text);
+                                  ref
+                                      .read(authProviderLogin.notifier)
+                                      .login("stu@test.io", "123456");
+
+                                  SharePreferenceUtil.setRememberMe(ref.read(rememberMeProvider));
+
+                                  // ref.read(authProviderLogin.notifier).login(
+                                  //     _userEmailController.text,
+                                  //     _userPassController.text);
                                 },
                                 child: const Text(
                                   "Login",
@@ -228,13 +237,7 @@ class LoginScreenView extends ConsumerWidget {
     ref.listen<DataState>(authProviderLogin, (_, state) {
       state.maybeWhen(
         success: (user) {
-          // if (user?.numberVerified == "verified") {
-          //   context.goToHomePage();
-          //   ref.read(favouriteListFutureProvider(SharePreferenceUtil.getUserId()));
-          // } else {
-          //   ref.read(otpProvider.notifier).otpResend();
-          //   context.goOTPVerify( "signUp");
-          // }
+          context.goToHomePage();
         },
         error: (err, _) {
           debugPrint(err);

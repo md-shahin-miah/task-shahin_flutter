@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class LoadingWidget extends StatelessWidget {
       child: SizedBox(
         width: 22,
         height: 22,
-        child: CircularProgressIndicator(strokeWidth: 1.5),
+        child: CircularProgressIndicator(strokeWidth: 1.5, color: AppColors.secondary,),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
+import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
 
 final defaultInitialReaction = Reaction<String>(
   value: null,
@@ -19,7 +20,7 @@ final defaultInitialReaction = Reaction<String>(
 final defaultInitialcommentReaction = Reaction<String>(
   value: null,
   icon: buildReactionsIcon(
-    AppImageAssets.love,
+    AppImageAssets.like,
     const Text(
       'Like',
       style: TextStyle(fontSize: 16, color: AppColors.black),
@@ -82,9 +83,9 @@ final List<Reaction<String>> reactions = [
     ),
   ),
   Reaction<String>(
-    value: 'Happy',
+    value: 'Haha',
     title: _buildEmojiTitle(
-      'Happy',
+      'Haha',
     ),
     previewIcon: _buildEmojiPreviewIcon(
       AppImageAssets.haha,
@@ -92,7 +93,7 @@ final List<Reaction<String>> reactions = [
     icon: buildReactionsIcon(
       AppImageAssets.haha,
       const Text(
-        'Happy',
+        'Haha',
         style: TextStyle(
           color: Color(0XFF3b5998),
         ),
@@ -155,6 +156,32 @@ final List<Reaction<String>> reactions = [
   ),
 ];
 
+int getSelectedIndex(String value) {
+  int res = -1;
+  for (int i = 0; i < reactions.length; i++) {
+    print(
+        '---------value------->${reactions[i].value?.toLowerCase() == value.toLowerCase()} $value    ${reactions[i].value}');
+    if (reactions[i].value?.toLowerCase() == value.toLowerCase()) {
+      res = i;
+      return i;
+    }
+  }
+  return res;
+}
+
+List<Reaction<String>> getListSelectedReactions(List<LikeType> likes) {
+  List<Reaction<String>> list = [];
+  for (int i = 0; i < reactions.length; i++) {
+    for (int j = 0; j < likes.length; j++) {
+      if (reactions[i].value?.toLowerCase() ==
+          likes[j].reactionType?.toLowerCase()) {
+        list.add(reactions[i]);
+      }
+    }
+  }
+  return list;
+}
+
 final List<Reaction<String>> reactionscomment = [
   Reaction<String>(
     value: 'Like',
@@ -193,9 +220,9 @@ final List<Reaction<String>> reactionscomment = [
     ),
   ),
   Reaction<String>(
-    value: 'Happy',
+    value: 'Haha',
     title: _buildEmojiTitle(
-      'Happy',
+      'Haha',
     ),
     previewIcon: _buildEmojiPreviewIcon(
       AppImageAssets.haha,
@@ -203,7 +230,7 @@ final List<Reaction<String>> reactionscomment = [
     icon: buildReactionsIcon(
       AppImageAssets.haha,
       const Text(
-        'Happy',
+        'Haha',
         style: TextStyle(
           color: Color(0XFF3b5998),
         ),
@@ -284,7 +311,6 @@ Widget buildReactionsIcon(String path, Text text) {
   );
 }
 
-
 Widget makeLove() {
   return Container(
     width: 25,
@@ -292,15 +318,12 @@ Widget makeLove() {
     decoration: BoxDecoration(
         color: Colors.red,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.white)
-    ),
+        border: Border.all(color: Colors.white)),
     child: const Center(
       child: Icon(Icons.favorite, size: 12, color: Colors.white),
     ),
   );
 }
-
-
 
 Widget makeLike() {
   return Container(
@@ -309,8 +332,7 @@ Widget makeLike() {
     decoration: BoxDecoration(
         color: Colors.blue,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.white)
-    ),
+        border: Border.all(color: Colors.white)),
     child: const Center(
       child: Icon(Icons.thumb_up, size: 12, color: Colors.white),
     ),

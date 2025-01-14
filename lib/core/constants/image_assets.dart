@@ -8,6 +8,7 @@ class AppImageAssets{
 
 
   static const String like = 'assets/icons/like.png';
+  static const String likeGray = 'assets/icons/like_gray.png';
   static const String love = 'assets/icons/love.png';
   static const String haha = 'assets/icons/haha.png';
   static const String angry = 'assets/icons/angry.png';
@@ -19,6 +20,8 @@ class AppImageAssets{
 
   static const String commentFilled = 'assets/icons/comment_filled.png';
   static const String commentRegular= 'assets/icons/comment_reg.png';
+  static const String sendArrow= 'assets/icons/send_arr.png';
+  static const String threeDot= 'assets/icons/dot_th.png';
 
 
 }
