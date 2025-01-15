@@ -37,9 +37,9 @@ class FeedItem extends StatelessWidget {
     var selectedIndexReact = getSelectedIndex(like ?? "");
     print("---------dsdsds ---->");
     var youTxt = selectedIndexReact.isNegative
-        ? ""
-        : reactions.length > 2
-            ? "You and ${reactions.length} other"
+        ? "${feedResponse.likeType.length} likes this"
+        : feedResponse.likeType.length > 1
+            ? "You and ${feedResponse.likeType.length} other"
             : "You likes this";
 
     return Padding(
