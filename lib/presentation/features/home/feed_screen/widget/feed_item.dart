@@ -6,6 +6,7 @@ import 'package:linkfy_text/linkfy_text.dart';
 import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/utils/utils.dart';
+import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/horizontal_reaction_list.dart';
 
@@ -14,14 +15,14 @@ import '../../../../../data/network/models/network_request/create_delete_reactio
 import '../../../../../data/network/models/network_response/feed_response.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../../../../widgets/common/reactions.dart';
+import '../../../../widgets/button/reactions.dart';
 import '../feeds_screen_view_model.dart';
 
-class ListItem extends StatelessWidget {
-  FeedResponse feedResponse;
+class FeedItem extends StatelessWidget {
+ final FeedResponse feedResponse;
   Reaction<String>? reactionCu;
 
-  ListItem(this.feedResponse, {super.key});
+  FeedItem(this.feedResponse, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +45,6 @@ class ListItem extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          // color: Colors.white,
-          // boxShadow: [
-          //   BoxShadow(
-          //     color: Colors.grey.withOpacity(0.2),
-          //     blurRadius: 5,
-          //     spreadRadius: 2,
-          //   ),
-          // ],
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -119,20 +112,7 @@ class ListItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // placeholder: (context, url) {
-                      //   return Image.asset(
-                      //     AppImageAssets.angry,
-                      //     fit: BoxFit.cover,
-                      //     width: double.infinity,
-                      //   );
-                      // },
-                      // errorWidget: (context, url, error) {
-                      //   return Image.asset(
-                      //     AppImageAssets.angry,
-                      //     fit: BoxFit.cover,
-                      //     width: double.infinity,
-                      //   );
-                      // },
+
                     )
                   : Center(child: textFeed(feedResponse)),
             ),
@@ -154,10 +134,6 @@ class ListItem extends StatelessWidget {
                               : const SizedBox()
                           : const SizedBox(),
 
-                      // Text(
-                      //  '${ feedResponse.likeType.length}',
-                      //   style: TextStyle(fontSize: 15, color: Colors.grey[800]),
-                      // )
                     ],
                   ),
                   buildReactionsIcon(
@@ -170,10 +146,6 @@ class ListItem extends StatelessWidget {
                     ),
                   )
 
-                  // Text(
-                  //   "No Comments",
-                  //   style: TextStyle(fontSize: 13, color: Colors.grey[800]),
-                  // ),
                 ],
               ),
             ),
@@ -201,8 +173,8 @@ class ListItem extends StatelessWidget {
                         //do api call here
                       },
                       reactions: reactions,
-                      placeholder: selectedIndexReact > -1 ? reactionCu! : defaultInitialcommentReaction,
-                      selectedReaction: defaultInitialcommentReaction,
+                      placeholder: selectedIndexReact > -1 ? reactionCu! : defaultInitiaCommentReaction,
+                      selectedReaction: defaultInitiaCommentReaction,
                     ),
                   ),
                 ),

@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_text_styles.dart';
-import '../../widgets/common/app_buttons.dart';
-
-
+import 'package:shahin_appify_task/presentation/widgets/button/custom_secondary_button.dart';
 
 class NotFoundPage extends StatelessWidget {
   const NotFoundPage({super.key});
@@ -27,7 +24,7 @@ class NotFoundPage extends StatelessWidget {
                   style: AppTextStyles.h3,
                 ),
                 const SizedBox(height: 30),
-                AppButtons.primary(
+                CustomSecondaryButton.secondary(
                   width: 200,
                   onTap: () {
                     context.pop();

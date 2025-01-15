@@ -3,8 +3,8 @@ import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_shadows.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_text_styles.dart';
 
-class AppButtons {
-  static Widget primary({
+class CustomSecondaryButton {
+  static Widget secondary({
     required VoidCallback? onTap,
     required Widget child,
     double? width,
@@ -12,9 +12,9 @@ class AppButtons {
     Color? textColor,
   }) {
     final decoration = BoxDecoration(
-      color: fillColor ?? (onTap == null ? Colors.grey[300] : AppColors.primaryColor),
+      color: fillColor ?? (onTap == null ? AppColors.lightGray : AppColors.primaryColor),
       border: Border.all(
-        color: fillColor ?? (onTap == null ? Colors.grey[300]! : AppColors.primaryColor),
+        color: fillColor ?? (onTap == null ? AppColors.lightGray : AppColors.primaryColor),
       ),
       borderRadius: BorderRadius.circular(12),
       boxShadow: [AppShadows.primary],
@@ -39,45 +39,7 @@ class AppButtons {
       ),
     );
   }
+
+
+
 }
-
-
-
-class CustomButton extends StatelessWidget {
-  final String btnText;
-  final double? width;
-  final double? textSize;
-  final Color bgColor;
-  final VoidCallback? toggleObscure;
-
-  const CustomButton({
-    required this.btnText,
-    this.textSize = 18,
-    this.toggleObscure,
-    required this.bgColor,
-    this.width = double.infinity,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: 50,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: bgColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        onPressed: toggleObscure,
-        child: Text(
-          btnText,
-          style: TextStyle(fontSize: textSize, color: AppColors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-}
-

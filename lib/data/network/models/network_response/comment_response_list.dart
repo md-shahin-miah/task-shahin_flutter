@@ -1,4 +1,4 @@
-import 'package:shahin_appify_task/data/network/models/network_response/comment_response.dart';
+import 'package:shahin_appify_task/domain/model/comments/comment_response.dart';
 
 class CommentResponseList {
   List<CommentResponse> commentResponseList;

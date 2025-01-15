@@ -1,5 +1,4 @@
-
-import 'meta_data.dart';
+import 'package:shahin_appify_task/domain/model/common/meta_data.dart';
 
 class User {
   User({
@@ -19,7 +18,7 @@ class User {
   final String? profilePic;
   final num? isPrivateChat;
   final dynamic expireDate;
-  final dynamic status;
+  final String? status;
   final dynamic pauseDate;
   final String? userType;
   final MetaDataClass? meta;

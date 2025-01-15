@@ -3,12 +3,12 @@ import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/data/network/models/network_response/comment_response.dart';
+import 'package:shahin_appify_task/domain/model/comments/comment_response.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/reply_response.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/reply_widget.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
-import 'package:shahin_appify_task/presentation/widgets/common/reactions.dart';
+import 'package:shahin_appify_task/presentation/widgets/button/reactions.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CommentWidget extends ConsumerWidget {
@@ -115,15 +115,15 @@ class CommentWidget extends ConsumerWidget {
               ref.watch(replyFutureProvider(comment.id.toString())).when(data: (data) {
                 ReplyResponseList? replyData = data;
 
-                if (replyData?.replyresponsList != null) {
+                if (replyData?.replyResponseList != null) {
                   return Container(
                     margin: const EdgeInsets.only(left: 50),
                     child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: replyData?.replyresponsList.length,
+                      itemCount: replyData?.replyResponseList.length,
                       itemBuilder: (context, index) {
-                        return ReplyWidget(comment: replyData!.replyresponsList[index]);
+                        return ReplyWidget(comment: replyData!.replyResponseList[index]);
                       },
                     ),
                   );

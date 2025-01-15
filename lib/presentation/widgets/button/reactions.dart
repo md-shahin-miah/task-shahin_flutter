@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
+import 'package:shahin_appify_task/domain/model/feed/like_type.dart';
 
 final defaultInitialReaction = Reaction<String>(
   value: null,
@@ -17,7 +17,7 @@ final defaultInitialReaction = Reaction<String>(
   ),
 );
 
-final defaultInitialcommentReaction = Reaction<String>(
+final defaultInitiaCommentReaction = Reaction<String>(
   value: null,
   icon: buildReactionsIcon(
     AppImageAssets.unLike,

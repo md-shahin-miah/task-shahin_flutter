@@ -4,10 +4,12 @@ import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
 import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
+import 'package:shahin_appify_task/presentation/features/home/create_post/widget/gradient_color_selector.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 
 import '../../../../core/themes/styles/app_colors.dart';
 import '../../../../data/network/models/network_request/create_post_request.dart';
+import 'widget/gradient_text_container.dart';
 
 final selectedGradiant = StateProvider((ref) => 0);
 
@@ -137,123 +139,4 @@ class CreatePostScreen extends ConsumerWidget {
   }
 }
 
-class GradientTextContainer extends StatelessWidget {
-  final TextEditingController controller;
-  final TextAlign textAlign;
-  final FontWeight fontWeight;
 
-  const GradientTextContainer({
-    required this.controller,
-    required this.textAlign,
-    required this.fontWeight,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(
-      builder: (context, ref, child) => Container(
-        padding: const EdgeInsets.all(10),
-        alignment: textAlign == TextAlign.center
-            ? Alignment.center
-            : Alignment.topLeft,
-        decoration: BoxDecoration(
-          gradient:
-              ColorConstantLinear.gradientsColor[ref.watch(selectedGradiant)],
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: TextField(
-          controller: controller,
-          minLines: textAlign == TextAlign.center ? 1 : 7,
-          maxLines: 7,
-          textAlign: textAlign,
-          style: TextStyle(fontWeight: fontWeight),
-          decoration: const InputDecoration(
-            hintText: "What's on your mind?",
-            border: InputBorder.none,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class GradientColorSelector extends StatelessWidget {
-  final List gradients;
-
-  // final List<Color> selectedGradient;
-  final VoidCallback onToggleList;
-
-  const GradientColorSelector({
-    required this.gradients,
-    // required this.selectedGradient,
-    required this.onToggleList,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: onToggleList,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(0),
-              ),
-              child: Icon(
-                Icons.chevron_right,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Flexible(
-            child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: 40,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: gradients.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 5),
-                  itemBuilder: (context, index) {
-                    return Consumer(
-                      builder: (context, ref, child) => GestureDetector(
-                        onTap: () {
-                          ref.read(selectedGradiant.notifier).state = index;
-                          // onGradientSelected(gradients[index], index != 0);
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: gradients[index],
-                            borderRadius: BorderRadius.circular(2),
-                            border: Border.all(
-                              color:
-                                  gradients[index] == ref.read(selectedGradiant)
-                                      ? Colors.blue
-                                      : Colors.grey.shade300,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                )),
-          ),
-        ],
-      ),
-    );
-  }
-}

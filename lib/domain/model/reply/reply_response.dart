@@ -1,5 +1,7 @@
-class CommentResponse {
-  CommentResponse({
+import 'package:shahin_appify_task/domain/model/common/user.dart';
+
+class ReplyResponse {
+  ReplyResponse({
     required this.id,
     required this.schoolId,
     required this.feedId,
@@ -18,9 +20,8 @@ class CommentResponse {
     required this.giftedCoins,
     required this.replies,
     required this.user,
-    required this.privateUser,
-    required this.totalLikes,
     required this.reactionTypes,
+    required this.totalLikes,
     required this.commentlike,
   });
 
@@ -31,7 +32,7 @@ class CommentResponse {
   final num? replyCount;
   final num? likeCount;
   final String? commentTxt;
-  final dynamic parrentId;
+  final int? parrentId;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final dynamic file;
@@ -42,13 +43,12 @@ class CommentResponse {
   final dynamic giftedCoins;
   final List<dynamic> replies;
   final User? user;
-  final dynamic privateUser;
-  final List<dynamic> totalLikes;
   final List<dynamic> reactionTypes;
+  final List<dynamic> totalLikes;
   final dynamic commentlike;
 
-  factory CommentResponse.fromJson(Map<String, dynamic> json){
-    return CommentResponse(
+  factory ReplyResponse.fromJson(Map<String, dynamic> json){
+    return ReplyResponse(
       id: json["id"],
       schoolId: json["school_id"],
       feedId: json["feed_id"],
@@ -67,9 +67,8 @@ class CommentResponse {
       giftedCoins: json["gifted_coins"],
       replies: json["replies"] == null ? [] : List<dynamic>.from(json["replies"]!.map((x) => x)),
       user: json["user"] == null ? null : User.fromJson(json["user"]),
-      privateUser: json["private_user"],
-      totalLikes: json["totalLikes"] == null ? [] : List<dynamic>.from(json["totalLikes"]!.map((x) => x)),
       reactionTypes: json["reaction_types"] == null ? [] : List<dynamic>.from(json["reaction_types"]!.map((x) => x)),
+      totalLikes: json["totalLikes"] == null ? [] : List<dynamic>.from(json["totalLikes"]!.map((x) => x)),
       commentlike: json["commentlike"],
     );
   }
@@ -93,72 +92,13 @@ class CommentResponse {
     "gifted_coins": giftedCoins,
     "replies": replies.map((x) => x).toList(),
     "user": user?.toJson(),
-    "private_user": privateUser,
-    "totalLikes": totalLikes.map((x) => x).toList(),
     "reaction_types": reactionTypes.map((x) => x).toList(),
+    "totalLikes": totalLikes.map((x) => x).toList(),
     "commentlike": commentlike,
   };
 
   @override
   String toString(){
-    return "$id, $schoolId, $feedId, $userId, $replyCount, $likeCount, $commentTxt, $parrentId, $createdAt, $updatedAt, $file, $privateUserId, $isAuthorAndAnonymous, $gift, $sellerId, $giftedCoins, $replies, $user, $privateUser, $totalLikes, $reactionTypes, $commentlike, ";
-  }
-}
-
-class User {
-  User({
-    required this.id,
-    required this.fullName,
-    required this.profilePic,
-    required this.userType,
-    required this.meta,
-  });
-
-  final int? id;
-  final String? fullName;
-  final String? profilePic;
-  final String? userType;
-  final Meta? meta;
-
-  factory User.fromJson(Map<String, dynamic> json){
-    return User(
-      id: json["id"],
-      fullName: json["full_name"],
-      profilePic: json["profile_pic"],
-      userType: json["user_type"],
-      meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "full_name": fullName,
-    "profile_pic": profilePic,
-    "user_type": userType,
-    "meta": meta?.toJson(),
-  };
-
-  @override
-  String toString(){
-    return "$id, $fullName, $profilePic, $userType, $meta, ";
-  }
-}
-
-class Meta {
-  Meta({required this.json});
-  final Map<String,dynamic> json;
-
-  factory Meta.fromJson(Map<String, dynamic> json){
-    return Meta(
-        json: json
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-  };
-
-  @override
-  String toString(){
-    return "";
+    return "$id, $schoolId, $feedId, $userId, $replyCount, $likeCount, $commentTxt, $parrentId, $createdAt, $updatedAt, $file, $privateUserId, $isAuthorAndAnonymous, $gift, $sellerId, $giftedCoins, $replies, $user, $reactionTypes, $totalLikes, $commentlike, ";
   }
 }

@@ -51,11 +51,3 @@ class DynamicItemDisplay extends StatelessWidget {
     );
   }
 }
-
-class Item {
-  final Color color;
-  final String icon;
-  final int quantity;
-
-  Item({required this.color, required this.icon, required this.quantity});
-}

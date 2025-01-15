@@ -8,9 +8,10 @@ import 'package:shahin_appify_task/data/network/models/network_request/create_re
 import 'package:shahin_appify_task/data/network/models/network_response/comment_response_list.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
+import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_widget.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
-import 'package:shahin_appify_task/presentation/widgets/common/custom_text_field.dart';
+import 'package:shahin_appify_task/presentation/widgets/text_field/custom_text_field.dart';
 
 final replyStateProvider = StateProvider((ref) => "");
 final controllerCommentReply = TextEditingController();

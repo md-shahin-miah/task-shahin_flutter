@@ -8,8 +8,8 @@ import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
-import '../../../widgets/common/custom_text_field.dart';
-import '../../../widgets/common/loading_widget.dart';
+import '../../../widgets/text_field/custom_text_field.dart';
+import '../../../widgets/loader/loading_widget.dart';
 
 final passwordObscureTextSignUp = StateProvider((ref) {
   return true;

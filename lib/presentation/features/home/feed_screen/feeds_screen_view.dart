@@ -1,26 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
-import 'package:shahin_appify_task/data/network/models/network_request/create_comment_request.dart';
-import 'package:shahin_appify_task/data/network/models/network_request/create_delete_reaction_request.dart';
-import 'package:shahin_appify_task/data/network/models/network_request/create_post_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/feed_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
-import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/list_item.dart';
-import 'package:shahin_appify_task/presentation/widgets/common/app_buttons.dart';
-import 'package:shahin_appify_task/presentation/widgets/common/loading_widget.dart';
-import 'package:swipe_refresh/swipe_refresh.dart';
-import '../../../widgets/common/custom_text_field.dart';
-import '../../../widgets/common/reactions.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/feed_item.dart';
+import 'package:shahin_appify_task/presentation/widgets/button/custom_button.dart';
 import 'widget/comment_bottom_sheet.dart';
 
 class FeedScreenView extends ConsumerWidget {
@@ -91,7 +81,7 @@ class FeedScreenView extends ConsumerWidget {
                                 ),
                               ),
                             ),
-                            CustomButton(
+                            CustomPrimaryButton(
                               btnText: 'Post',
                               width: null,
                               textSize: 14,
@@ -109,7 +99,7 @@ class FeedScreenView extends ConsumerWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return ListItem(dataResponse.feedList[index]);
+                        return FeedItem(dataResponse.feedList[index]);
                       },
                     ),
                   ],

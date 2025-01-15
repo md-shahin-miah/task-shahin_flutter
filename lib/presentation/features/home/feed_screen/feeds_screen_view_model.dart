@@ -12,6 +12,7 @@ import 'package:shahin_appify_task/data/network/models/network_response/feed_res
 import 'package:shahin_appify_task/data/network/models/network_response/reply_response.dart';
 import 'package:shahin_appify_task/data/repository/feed_repository_impl.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
+import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
 
 import '../../../../data/network/models/network_response/comment_response_list.dart';
 

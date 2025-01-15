@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/data/network/models/network_response/reply_response.dart';
+import 'package:shahin_appify_task/domain/model/reply/reply_response.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ReplyWidget extends ConsumerWidget {
