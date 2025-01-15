@@ -101,7 +101,7 @@ class FeedResponse {
   final num? isPrivateChat;
   final List<LikeType> likeType;
   final dynamic poll;
-  final Like? like;
+  late  Like? like;
   final dynamic group;
   final User? user;
   final dynamic savedPosts;

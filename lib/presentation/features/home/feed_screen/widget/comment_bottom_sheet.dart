@@ -4,24 +4,30 @@ import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_comment_request.dart';
-import 'package:shahin_appify_task/data/network/models/network_request/create_reply_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/comment_response_list.dart';
-import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
-import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_widget.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_item_widget.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/horizontal_reaction_list.dart';
+import 'package:shahin_appify_task/presentation/widgets/shimmer/comment_shimmer.dart';
 import 'package:shahin_appify_task/presentation/widgets/text_field/custom_text_field.dart';
 
-final replyStateProvider = StateProvider((ref) => "");
-final controllerCommentReply = TextEditingController();
+import '../../../../widgets/button/reactions.dart';
 
-void showCommentBottomSheet(BuildContext context, FeedResponse feedResponse, String title) {
+final controllerComment = TextEditingController();
+final controllerReply = TextEditingController();
+final selectedReplyIndex = StateProvider((ref) => -1);
+
+void showCommentBottomSheet(BuildContext context, FeedResponse feedResponse, String title, int selectedIndexReact) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (context) => CommentBottomSheet(feedResponse: feedResponse, title: title),
+    builder: (context) => CommentBottomSheet(
+      feedResponse: feedResponse,
+      title: title,
+    ),
   );
 }
 
@@ -76,21 +82,17 @@ class CommentBottomSheet extends ConsumerWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                const Icon(Icons.favorite, color: Colors.red, size: 18),
-                const SizedBox(width: 8.0),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: feedResponse?.likeCount != null
+                ? feedResponse!.likeCount! > 0
+                    ? SizedBox(
+                        height: 25,
+                        child: DynamicItemDisplay(
+                          reactions: getListSelectedReactions(feedResponse!.likeType),
+                          title: title,
+                        ),
+                      )
+                    : const SizedBox()
+                : const SizedBox(),
           ),
           const SizedBox(
             height: 15,
@@ -98,48 +100,29 @@ class CommentBottomSheet extends ConsumerWidget {
           Expanded(
             flex: keyboardHeight == 0 ? 4 : 1,
             child: Consumer(builder: (context, ref, child) {
-              return ref.watch(commentFutureProvider(feedResponse!.id.toString()!)).when(data: (data) {
+              return ref.watch(commentFutureProvider(feedResponse!.id.toString())).when(data: (data) {
                 CommentResponseList? commentData = data;
 
                 return ListView.builder(
                   itemCount: commentData?.commentResponseList.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        ref.invalidate(replyStateProvider);
-                      },
-                      child: CommentWidget(comment: commentData!.commentResponseList[index]),
-                    );
+                    return CommentItem(comment: commentData!.commentResponseList[index], commentIndex: index);
                   },
                 );
               }, error: (error, stackTrace) {
                 return const Text('Something went wrong');
               }, loading: () {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: Container(
-                            width: 22,
-                            height: 22,
-                            padding: const EdgeInsets.all(5),
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 1.5,
-                              color: AppColors.primaryColor,
-                            ),
-                          )),
-                    ),
-                    const Text('Loading comments'),
-                  ],
-                );
+                return const CommentShimmer();
               });
             }),
           ),
           _buildCommentTextField(feedResponse!),
           Expanded(
-            flex: keyboardHeight == 0 ? 0 : 1,
+            flex: ref.watch(selectedReplyIndex) > -1
+                ? 0
+                : keyboardHeight == 0
+                    ? 0
+                    : 1,
             child: Container(),
           )
         ],
@@ -155,11 +138,13 @@ class CommentBottomSheet extends ConsumerWidget {
           ref.invalidate(commentFutureProvider);
           ref.invalidate(feedFutureProvider);
           ref.invalidate(replyFutureProvider);
-          controllerCommentReply.text = "";
+          ref.invalidate(selectedReplyIndex);
+
+          controllerComment.text = "";
         },
         error: (err, _) {
           debugPrint(err);
-          SnackBarService.showSnackBar(title: err, backgroundColor: AppColors.colorError);
+          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
         },
         orElse: () {},
       );
@@ -167,15 +152,16 @@ class CommentBottomSheet extends ConsumerWidget {
     ref.listen<DataState>(createReplyStateNotifierProvider, (_, state) {
       state.maybeWhen(
         success: (user) {
-          controllerCommentReply.text = "";
+          controllerReply.text = "";
           print("-------createReplyStateNotifierProvider--------->");
           ref.invalidate(commentFutureProvider);
           ref.invalidate(feedFutureProvider);
           ref.invalidate(replyFutureProvider);
+          ref.invalidate(selectedReplyIndex);
         },
         error: (err, _) {
           debugPrint(err);
-          SnackBarService.showSnackBar(title: err, backgroundColor: AppColors.colorError);
+          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
         },
         orElse: () {},
       );
@@ -212,13 +198,25 @@ class CommentBottomSheet extends ConsumerWidget {
                   Expanded(
                     flex: 4,
                     child: Consumer(builder: (context, ref, child) {
-                      var txt = ref.watch(replyStateProvider) == "" ? "Comment" : "Reply";
-                      return CustomTextField(
-                        isBorder: false,
-                        hintText: 'Write a $txt',
-                        hintColor: AppColors.lightGray,
-                        controller: controllerCommentReply,
-                        isPassword: false,
+                      return FocusScope(
+
+
+                        child: Focus(
+                          onFocusChange: (focus){
+                            if(focus){
+                              ref.invalidate(selectedReplyIndex);
+                            }
+
+                          },
+
+                          child: CustomTextField(
+                            isBorder: false,
+                            hintText: 'Write a comment',
+                            hintColor: AppColors.lightGray,
+                            controller: controllerComment,
+                            isPassword: false,
+                          ),
+                        ),
                       );
                     }),
                   ),
@@ -227,27 +225,15 @@ class CommentBottomSheet extends ConsumerWidget {
                     child: Consumer(
                       builder: (context, ref, child) => InkWell(
                         onTap: () {
-                          if (ref.read(replyStateProvider) == "") {
-                            print("-----ss--c---->${ref.read(replyStateProvider)}");
-
-                            ref.read(createCommentStateNotifierProvider.notifier).createComment(CreateCommentRequest(
-                                comment_txt: controllerCommentReply.text, feed_id: feedResponse.id.toString(), feed_user_id: feedResponse.userId.toString(), commentSource: "COMMUNITY"));
-                            controllerCommentReply.text = "";
-                          } else {
-                            print("-----ss--d---->${ref.read(replyStateProvider)}");
-
-                            ref.read(createCommentStateNotifierProvider.notifier).createReply(CreateReplyRequest(
-                                comment_txt: controllerCommentReply.text,
-                                feed_id: feedResponse.id.toString(),
-                                feed_user_id: feedResponse.userId.toString(),
-                                parrent_id: ref.read(replyStateProvider),
-                                commentSource: "COMMUNITY"));
-                          }
+                          ref.invalidate(selectedReplyIndex);
+                          ref.read(createCommentStateNotifierProvider.notifier).createComment(
+                              CreateCommentRequest(comment_txt: controllerComment.text, feed_id: feedResponse.id.toString(), feed_user_id: feedResponse.userId.toString(), commentSource: "COMMUNITY"));
+                          controllerComment.text = "";
                         },
                         child: Container(
                           height: double.infinity,
                           padding: const EdgeInsets.only(right: 8),
-                          decoration: const BoxDecoration(color: AppColors.primaryDark, borderRadius: BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30))),
+                          decoration: const BoxDecoration(color: AppColors.primaryColor, borderRadius: BorderRadius.only(topRight: Radius.circular(30), bottomRight: Radius.circular(30))),
                           child: ref.watch(createCommentStateNotifierProvider).maybeWhen(
                             orElse: () {
                               return Image.asset(AppImageAssets.sendArrow, width: 24);

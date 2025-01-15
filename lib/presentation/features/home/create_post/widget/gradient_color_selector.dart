@@ -22,7 +22,7 @@ class GradientColorSelector extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          GestureDetector(
+          InkWell(
             onTap: onToggleList,
             child: Container(
               width: 40,

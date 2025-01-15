@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
+import 'package:shahin_appify_task/data/network/models/network_request/create_reply_request.dart';
 import 'package:shahin_appify_task/domain/model/reply/reply_response.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
+import 'package:shahin_appify_task/presentation/widgets/text_field/custom_text_field.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class ReplyWidget extends ConsumerWidget {
+class ReplyItem extends ConsumerWidget {
   final ReplyResponse comment;
 
-  const ReplyWidget({required this.comment, Key? key}) : super(key: key);
+
+  ReplyItem({required this.comment, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,8 +36,8 @@ class ReplyWidget extends ConsumerWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(left: 25, top: 8, bottom: 8),
-                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.only(left: 25, top: 8, bottom: 0),
+                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                       decoration: BoxDecoration(color: AppColors.fillColor2, borderRadius: BorderRadius.circular(15)),
                       child: Row(
                         children: [
@@ -55,6 +61,9 @@ class ReplyWidget extends ConsumerWidget {
                       padding: const EdgeInsets.only(left: 20.0),
                       child: Row(
                         children: [
+                          const SizedBox(
+                            width: 14,
+                          ),
                           Text(timeAgo, style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
                           const SizedBox(width: 20.0),
                           const Spacer(),
@@ -62,6 +71,7 @@ class ReplyWidget extends ConsumerWidget {
                           const SizedBox(
                             width: 5,
                           ),
+
                         ],
                       ),
                     ),

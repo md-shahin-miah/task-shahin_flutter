@@ -191,11 +191,15 @@ class LoginScreenView extends ConsumerWidget {
                                   debugPrint("Sign In clicked");
 
                                   if (_userEmailController.text.isEmpty) {
-                                    SnackBarService.showSnackBar(title: "Please enter email", backgroundColor: AppColors.colorError);
+                                    print("object--------------->");
+                                    ToastService.showToast(title: "Please enter email", backgroundColor: AppColors.colorError);
                                   } else if (_userPassController.text.isEmpty) {
-                                    SnackBarService.showSnackBar(title: "Please enter password", backgroundColor: AppColors.colorError);
-                                  } else if (_userPassController.text.isNotEmpty && _userPassController.text.length < 6) {
-                                    SnackBarService.showSnackBar(title: "Password length must me 6", backgroundColor: AppColors.colorError);
+                                    print("object--------------2->");
+                                    ToastService.showToast(title: "Please enter password", backgroundColor: AppColors.colorError);
+                                  } else if (_userPassController.text.length < 6) {
+                                    print("object--------------3->");
+
+                                    ToastService.showToast(title: "Password length must me 6", backgroundColor: AppColors.colorError);
                                   } else {
                                     SharePreferenceUtil.setRememberMe(ref.read(rememberMeProvider));
                                     // ref
@@ -233,7 +237,7 @@ class LoginScreenView extends ConsumerWidget {
         },
         error: (err, _) {
           debugPrint(err);
-          SnackBarService.showSnackBar(title: err, backgroundColor: AppColors.colorError);
+          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
         },
         orElse: () {},
       );

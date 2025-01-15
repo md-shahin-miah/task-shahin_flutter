@@ -11,10 +11,11 @@ import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/feed_item.dart';
 import 'package:shahin_appify_task/presentation/widgets/button/custom_button.dart';
+import 'package:shahin_appify_task/presentation/widgets/shimmer/feed_shimmer.dart';
 import 'widget/comment_bottom_sheet.dart';
 
 class FeedScreenView extends ConsumerWidget {
-  FeedScreenView({super.key});
+  const FeedScreenView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,8 +30,7 @@ class FeedScreenView extends ConsumerWidget {
             ref.invalidate(feedFutureProvider);
             ref.invalidate(replyFutureProvider);
             ref.invalidate(commentFutureProvider);
-            ref.invalidate(replyStateProvider);
-            controllerCommentReply.text = "";
+            controllerComment.text = "";
           },
         );
       },
@@ -44,12 +44,12 @@ class FeedScreenView extends ConsumerWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         context.goToCreatePost();
                       },
                       child: Container(
-                        margin: const EdgeInsets.all(15),
+                        margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
                         padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
                           color: AppColors.white,
@@ -113,24 +113,8 @@ class FeedScreenView extends ConsumerWidget {
           return const Text("No data found");
           // }
         }, loading: () {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: const SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1.5,
-                        color: AppColors.primaryColor,
-                      ),
-                    )),
-              ),
-              Text('Loading your feed'),
-            ],
-          );
+          return const FeedShimmer();
+
         }),
       ),
     );
@@ -145,7 +129,7 @@ class FeedScreenView extends ConsumerWidget {
         },
         error: (err, _) {
           debugPrint(err);
-          SnackBarService.showSnackBar(title: err, backgroundColor: AppColors.colorError);
+          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
         },
         orElse: () {},
       );

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 
 class DynamicItemDisplay extends StatelessWidget {
-  final List<Reaction<String>> reactions ;
-  final int selected;
-  DynamicItemDisplay( {Key? key, required this.reactions,required this.selected}) : super(key: key);
+  final List<Reaction<String>> reactions;
+
+  final String title;
+
+  DynamicItemDisplay({Key? key, required this.reactions, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var youTxt=selected.isNegative?"":selected>1?"You and ${reactions.length} other":"You likes this";
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -44,7 +44,7 @@ class DynamicItemDisplay extends StatelessWidget {
           }),
         ),
         Text(
-          reactions.isEmpty ? "No Likes" : "$youTxt",
+          title,
           style: TextStyle(fontSize: 13, color: Colors.grey[800]),
         ),
       ],

@@ -195,7 +195,7 @@ log("url ->> ${EndPoints.baseUrl}$endPoint ->>>>> $response");
       if (response.statusCode == 403) {
         /// Session expired
 
-        SnackBarService.showSnackBar(
+        ToastService.showToast(
             title: "Session expired! Login to continue...",
             backgroundColor: AppColors.colorError);
 
@@ -204,13 +204,13 @@ log("url ->> ${EndPoints.baseUrl}$endPoint ->>>>> $response");
       } else if (response.statusCode == 422) {
         /// Custom validation message
 
-        SnackBarService.showSnackBar(
+        ToastService.showToast(
             title: "${jsonDecode(response.body)['errors'][0]['message']}",
             backgroundColor: AppColors.colorError);
       } else if (response.statusCode == 401 || response.statusCode == 404) {
         /// Custom message
 
-        SnackBarService.showSnackBar(
+        ToastService.showToast(
             title: "${jsonDecode(response.body)['msg']}",
             backgroundColor: AppColors.colorError);
         if (jsonDecode(response.body)['unverified'] != null) {
@@ -219,7 +219,7 @@ log("url ->> ${EndPoints.baseUrl}$endPoint ->>>>> $response");
           }
         }
       } else {
-        SnackBarService.showSnackBar(
+        ToastService.showToast(
             title: "Something went wrong!",
             backgroundColor: AppColors.colorError);
       }

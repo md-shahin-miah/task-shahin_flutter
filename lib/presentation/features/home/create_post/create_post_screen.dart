@@ -68,7 +68,7 @@ class CreatePostScreen extends ConsumerWidget {
                               uploadType: "text"));
                         }
                         else{
-                          SnackBarService.showSnackBar(title: "Text required", backgroundColor: AppColors.colorError);
+                          ToastService.showToast(title: "Text required", backgroundColor: AppColors.colorError);
 
 
                         }
@@ -130,7 +130,7 @@ class CreatePostScreen extends ConsumerWidget {
         },
         error: (err, _) {
           debugPrint(err);
-          SnackBarService.showSnackBar(title: err, backgroundColor: AppColors.colorError);
+          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
 
         },
         orElse: () {},
