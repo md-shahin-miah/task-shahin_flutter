@@ -39,6 +39,12 @@ class FeedRepositoryImpl extends FeedRepository {
   }
 
   @override
+  Future getReactions(String feedId) async {
+    return await NetworkService.getRequest("${EndPoints.getReactions}feed_id=$feedId",
+        requireToken: true);
+  }
+
+  @override
   Future createOrDeletedReaction(
       CreateOrDeleteReactionRequest createOrDeleteReactionRequest) async {
     return await NetworkService.postRequest(

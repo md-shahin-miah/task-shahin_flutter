@@ -11,6 +11,7 @@ import 'package:shahin_appify_task/data/share_preference/shared_preference_servi
 import 'package:shahin_appify_task/data/state/data_state.dart';
 
 final authProviderLogin = StateNotifierProvider.autoDispose<AuthViewModel, DataState>((ref) => AuthViewModel(ref));
+final authProviderLogout = StateNotifierProvider.autoDispose<AuthViewModel, DataState>((ref) => AuthViewModel(ref));
 
 final authProv = Provider.autoDispose((ref) => AuthViewModel(ref));
 
@@ -43,11 +44,13 @@ class AuthViewModel extends StateNotifier<DataState> {
         }
       } else {
         state = const DataState.error(message: "No internet Connection");
+        throw Exception("No internet connection, please try again.");
       }
     } catch (e) {
       state = DataState.error(message: e.toString());
     }
   }
+
   Future<void> logOut() async {
     state = const DataState.loading();
     try {
@@ -61,13 +64,13 @@ class AuthViewModel extends StateNotifier<DataState> {
         if (response.statusCode == 200) {
           SharePreferenceUtil.setUserToken("");
           SharePreferenceUtil.setRememberMe(false);
-            state = DataState.success(data: response);
-
+          state = DataState.success(data: response);
         } else {
           state = const DataState.error(message: "Logout, please try again.");
         }
       } else {
         state = const DataState.error(message: "No internet Connection");
+        throw Exception("No internet connection, please try again.");
       }
     } catch (e) {
       state = DataState.error(message: e.toString());

@@ -8,7 +8,7 @@ import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/data/providers/navigation_provider.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
-import 'package:shahin_appify_task/presentation/features/auth/login_screen/widget/logout_dialog.dart';
+import 'package:shahin_appify_task/presentation/features/home/home_sreen/widget/logout_dialog.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 import 'package:swipe_refresh/swipe_refresh.dart';

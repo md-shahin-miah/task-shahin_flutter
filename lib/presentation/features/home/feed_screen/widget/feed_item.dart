@@ -12,10 +12,8 @@ import 'package:shahin_appify_task/domain/model/feed/like.dart';
 import 'package:shahin_appify_task/domain/model/feed/like_type.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/horizontal_reaction_list.dart';
-
 import '../../../../../core/themes/styles/app_colors.dart';
 import '../../../../../data/network/models/network_request/create_delete_reaction_request.dart';
-import '../../../../../data/network/models/network_response/feed_response.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../widgets/button/reactions.dart';
@@ -35,12 +33,13 @@ class FeedItem extends StatelessWidget {
     final timeAgo = timeago.format(dateTime);
     var like = feedResponse.like?.reactionType ?? "";
     var selectedIndexReact = getSelectedIndex(like ?? "");
-    print("---------dsdsds ---->");
+    print("---------dsdsds ---->$selectedIndexReact  ${feedResponse.likeType.length}");
     var youTxt = selectedIndexReact.isNegative
         ? "${feedResponse.likeType.length} likes this"
         : feedResponse.likeType.length > 1
             ? "You and ${feedResponse.likeType.length} other"
             : "You likes this";
+    print("---------youTxt ---->${youTxt}  ${feedResponse.id}");
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
@@ -126,13 +125,11 @@ class FeedItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      feedResponse.likeCount != null
-                          ? feedResponse.likeCount! > 0
-                              ? SizedBox(
-                                  height: 25,
-                                  child: DynamicItemDisplay(reactions: getListSelectedReactions(feedResponse.likeType), title: youTxt),
-                                )
-                              : const SizedBox()
+                      feedResponse.likeType.isNotEmpty
+                          ? SizedBox(
+                              height: 25,
+                              child: DynamicItemDisplay(reactions: getListSelectedReactions(feedResponse.likeType), title: youTxt),
+                            )
                           : const SizedBox(),
                     ],
                   ),
@@ -157,33 +154,35 @@ class FeedItem extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Consumer(builder: (context, ref, child) {
-                    print("------dd------->");
                     var likeTemp = feedResponse.like?.reactionType ?? "";
                     var selectedIndexReactTemp = getSelectedIndex(likeTemp ?? "");
+                    print("------dd------->$likeTemp ---> ${feedResponse.id}  $selectedIndexReactTemp  $likeTemp");
 
                     if (selectedIndexReactTemp > -1) {
                       reactionCu = reactions.elementAt(selectedIndexReactTemp);
+                    } else {
+                      reactionCu = null;
                     }
 
-                  final val=  selectedIndexReactTemp > -1
-                        ? reactionCu != null
-                        ? reactionCu!
-                        : defaultInitiaCommentReaction
-                        : defaultInitiaCommentReaction;
+                    final val = reactionCu != null ? reactionCu! : defaultInitiaCommentReaction;
 
-                    print("----afdaw adsafsa-----$val---->");
+                    print("----react val -----${val.value}---- ${feedResponse.id} >  ${val.value != null}");
 
                     return ReactionButton<String>(
                       itemSize: const Size.square(40),
                       onReactionChanged: (Reaction<String>? reaction) {
                         var value = reaction?.value;
 
-                        print("--------feedResponse-------->${feedResponse.like == value?.toUpperCase()}");
-                        if (feedResponse.like == value) {
-                          feedResponse.like = null;
+                        print(
+                            "---------reaction-----start----->${Utils.equalsIgnoreCase(feedResponse.like?.reactionType, value)}    ${feedResponse.like?.reactionType} --> $value   ${feedResponse.id}");
+                        if (feedResponse.like != null && feedResponse.like?.reactionType != null && (value == null || Utils.equalsIgnoreCase(feedResponse.like?.reactionType, value))) {
+                          value = feedResponse.like?.reactionType;
+                          // feedResponse.like == null;
                         } else {
+                          value ??= feedResponse.like?.reactionType;
+                          value ??= "Like";
                           feedResponse.like = Like(
-                              reactionType: value?.toUpperCase(),
+                              reactionType: value.toUpperCase(),
                               id: 0,
                               createdAt: DateTime.now(),
                               feedId: feedResponse.id,
@@ -191,18 +190,16 @@ class FeedItem extends StatelessWidget {
                               meta: MetaDataClass(json: {}),
                               userId: feedResponse.userId,
                               isAnonymous: 0);
+
                         }
 
-                        value ??= feedResponse.like?.reactionType;
-                        value ??= "Like";
-                        print("---------reaction------->$value  ${getData(feedResponse.likeType, value)}    $value");
                         ref.read(createOrDeleteReactionStateNotifierProvider.notifier).createOrDeleteReaction(
-                            CreateOrDeleteReactionRequest(feed_id: feedResponse.id.toString(), action: "deleteOrCreate", reaction_type: value.toUpperCase(), reactionSource: "COMMUNITY"));
+                            CreateOrDeleteReactionRequest(feed_id: feedResponse.id.toString(), action: "deleteOrCreate", reaction_type: value?.toUpperCase(), reactionSource: "COMMUNITY"));
                       },
                       reactions: reactions,
-                      selectedReaction: val,
-                      placeholder: val,
-
+                      isChecked: true,
+                      selectedReaction: val.value != null ? val : defaultInitiaCommentReaction,
+                      placeholder: defaultInitiaCommentReaction,
                     );
                   }),
                 ),

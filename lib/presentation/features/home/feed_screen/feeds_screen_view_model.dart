@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shahin_appify_task/core/utils/utils.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_comment_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_delete_reaction_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_post_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_reply_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/feed_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
+import 'package:shahin_appify_task/data/network/models/network_response/reaction_response.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/reply_response.dart';
 import 'package:shahin_appify_task/data/repository/feed_repository_impl.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
@@ -18,6 +20,7 @@ import '../../../../data/network/models/network_response/comment_response_list.d
 
 final feedFutureProvider = FutureProvider.family<FeedResponseList?, FeedRequest>((ref, FeedRequest locationQueryModel) => ref.read(feedProvider).getFeedData(locationQueryModel));
 final commentFutureProvider = FutureProvider.family<CommentResponseList?, String>((ref, String feedId) => ref.read(feedProvider).getComment(feedId));
+final reactionFutureProvider = FutureProvider.family<ReactionResponseList?, String>((ref, String feedId) => ref.read(feedProvider).getReactions(feedId));
 final replyFutureProvider = FutureProvider.family<ReplyResponseList?, String>((ref, String feedId) => ref.read(feedProvider).getReply(feedId));
 
 final feedProvider = Provider<FeedScreenViewModel>((ref) => FeedScreenViewModel(ref));
@@ -38,10 +41,14 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     FeedResponseList? feedResponseList;
     try {
       if (result == ConnectivityResult.none) {
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
+
       } else {
         var response = await ref.read(feedRepoProvider).getFeed(feedRequest);
 
         if (response.statusCode == 200) {
+          Utils.printLongString("-------feed---------${response.body}------>");
           feedResponseList = FeedResponseList.fromJson(json.decode(response.body));
         } else {
           throw Exception("Failed, please try again.");
@@ -53,12 +60,17 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     return feedResponseList;
   }
 
+
+
+
   Future<ReplyResponseList?> getReply(String commentID) async {
     final result = await connectivity.checkConnectivity();
 
     ReplyResponseList? replyResponseList;
     try {
       if (result == ConnectivityResult.none) {
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
       } else {
         var response = await ref.read(feedRepoProvider).getReply(commentID);
 
@@ -84,6 +96,7 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     CommentResponseList? commentResponseList;
     try {
       if (result == ConnectivityResult.none) {
+        throw Exception("No internet connection, please try again.");
       } else {
         var response = await ref.read(feedRepoProvider).getComment(feedId);
 
@@ -99,6 +112,29 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     return commentResponseList;
   }
 
+  Future<ReactionResponseList?> getReactions(String feedId) async {
+    final result = await connectivity.checkConnectivity();
+
+    ReactionResponseList? reactionResponseList;
+    try {
+      if (result == ConnectivityResult.none) {
+        throw Exception("No internet connection, please try again.");
+      } else {
+        var response = await ref.read(feedRepoProvider).getReactions(feedId);
+
+        if (response.statusCode == 200) {
+          Utils.printLongString("------getReactions----> ${json.decode(response.body)}");
+          reactionResponseList = ReactionResponseList.fromJson(json.decode(response.body));
+        } else {
+          throw Exception("Failed, please try again.");
+        }
+      }
+    } on SocketException catch (e) {
+      throw Exception('Failed to load landing data: ${e.message}');
+    }
+    return reactionResponseList;
+  }
+
   Future<void> createPost(CreatePostRequest createPostRequest) async {
     state = const DataState.loading();
     final result = await connectivity.checkConnectivity();
@@ -106,6 +142,9 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     // FeedResponse? feedResponse;
     try {
       if (result == ConnectivityResult.none) {
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
+
       } else {
         var response = await ref.read(feedRepoProvider).createPost(createPostRequest);
 
@@ -130,7 +169,8 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
 
     try {
       if (result == ConnectivityResult.none) {
-        //local db
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
       } else {
         var response = await ref.read(feedRepoProvider).createReply(createReplyRequest);
 
@@ -153,6 +193,8 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
 
     try {
       if (result == ConnectivityResult.none) {
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
       } else {
         var response = await ref.read(feedRepoProvider).createPost(createPostRequest);
 
@@ -178,9 +220,12 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     // FeedResponse? feedResponse;
     try {
       if (result == ConnectivityResult.none) {
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
       } else {
-        var response = await ref.read(feedRepoProvider).createOrDeletedReaction(createOrDeleteReactionRequest);
+        final response = await ref.read(feedRepoProvider).createOrDeletedReaction(createOrDeleteReactionRequest);
 
+        Utils.printLongString("------createOrDeleteReaction----> ${json.decode(response.body)}");
         if (response.statusCode == 200) {
           state = DataState.success(data: response);
         } else {
@@ -190,7 +235,6 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     } on SocketException catch (e) {
       state = DataState.error(message: 'Failed to load landing data: ${e.message}');
 
-      throw Exception('Failed to load landing data: ${e.message}');
     }
   }
 
@@ -200,6 +244,8 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
 
     try {
       if (result == ConnectivityResult.none) {
+        state = const DataState.error(message: "No internet connection, please try again.");
+        throw Exception("No internet connection, please try again.");
       } else {
         var response = await ref.read(feedRepoProvider).createComment(createCommentRequest);
 

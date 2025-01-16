@@ -14,4 +14,5 @@ abstract class FeedRepository {
   Future createOrDeletedReaction(CreateOrDeleteReactionRequest createOrDeleteReactionRequest);
   Future getReply(String commentID);
   Future createReply(CreateReplyRequest createReplyRequest);
+  Future getReactions(String feedId);
 }

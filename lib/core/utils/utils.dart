@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class Utils{
+ static void printLongString(String text) { final RegExp pattern = RegExp('.{1,800}'); pattern.allMatches(text).forEach((RegExpMatch match) => print(match.group(0)));}
   static  String getCustomUniqueId() {
     const String pushChars =
         '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
@@ -38,6 +39,9 @@ class Utils{
       uniqueId += pushChars[lastRandChars[i]];
     }
     return uniqueId;
+  }
+  static bool equalsIgnoreCase(String? string1, String? string2) {
+    return string1?.toLowerCase() == string2?.toLowerCase();
   }
   static String extractDate(String timestamp) {
     DateTime dateTime = DateTime.parse(timestamp);

@@ -72,7 +72,7 @@ class FeedResponse {
   final num? isPinned;
   final String? fileType;
   final List<dynamic> files;
-  final num? likeCount;
+  late final num? likeCount;
   final num? commentCount;
   final num? shareCount;
   final int? shareId;

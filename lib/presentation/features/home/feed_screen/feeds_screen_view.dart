@@ -99,6 +99,7 @@ class FeedScreenView extends ConsumerWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        print("------------------item ->");
                         return FeedItem(dataResponse.feedList[index]);
                       },
                     ),

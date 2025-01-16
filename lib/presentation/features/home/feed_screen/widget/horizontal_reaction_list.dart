@@ -10,6 +10,7 @@ class DynamicItemDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("------title----->$title");
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [

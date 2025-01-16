@@ -17,6 +17,7 @@ class EndPoints {
   static const String createFeedPostUrl = 'api/app/teacher/community/createFeedWithUpload?';
   static const String createCommentUrl = 'api/app/student/comment/createComment';
   static const String getCommentUrl = 'api/app/student/comment/getComment/';
+  static const String getReactions = 'api/app/teacher/community/getAllReactionType?';
   static const String createOrDeleteReactionUrl = 'api/app/teacher/community/createLike?';
   static const String adReply = 'api/app/student/comment/createComment';
   static const String getReply = 'api/app/student/comment/getReply/';

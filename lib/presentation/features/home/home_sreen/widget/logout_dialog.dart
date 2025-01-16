@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart';
 import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
+import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
+import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
 
 import '../../../../../core/themes/styles/app_colors.dart';
@@ -9,6 +12,7 @@ import '../../../../../core/themes/styles/app_colors.dart';
 class LogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return Dialog(
       backgroundColor: AppColors.white,
       shape: RoundedRectangleBorder(
@@ -46,18 +50,20 @@ class LogoutDialog extends StatelessWidget {
               children: [
                 Expanded(
                   child: Consumer(
-                    builder: (context, ref, child) =>  TextButton(
+                    builder: (context, ref, child) {
+                      observer(ref,context);
+                      return TextButton(
                       onPressed: () {
                         ref
-                            .read(authProviderLogin.notifier)
+                            .read(authProviderLogout.notifier)
                             .logOut();
-                       context.goToLoginPage();
+
                       },
                       child: const Text(
                         'Yes',
                         style: TextStyle(color: AppColors.primaryColor),
                       ),
-                    ),
+                    );}
                   ),
                 ),
                 Container(
@@ -82,6 +88,22 @@ class LogoutDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void observer(WidgetRef ref,BuildContext context) {
+    ref.listen<DataState>(authProviderLogout, (_, state) {
+      state.maybeWhen(
+        success: (user) {
+          context.goToLoginPage();
+        },
+        error: (err, _) {
+          debugPrint(err);
+          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
+        },
+        orElse: () {},
+      );
+    });
+
   }
 }
 

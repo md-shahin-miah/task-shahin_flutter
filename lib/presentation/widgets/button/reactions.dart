@@ -3,6 +3,7 @@ import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/domain/model/feed/like_type.dart';
+import 'package:shahin_appify_task/domain/model/feed/reaction_response.dart';
 
 final defaultInitialReaction = Reaction<String>(
   value: null,
@@ -159,8 +160,8 @@ final List<Reaction<String>> reactions = [
 int getSelectedIndex(String value) {
   int res = -1;
   for (int i = 0; i < reactions.length; i++) {
-    print(
-        '---------value------->${reactions[i].value?.toLowerCase() == value.toLowerCase()} $value    ${reactions[i].value}');
+    // print(
+    //     '---------value------->${reactions[i].value?.toLowerCase() == value.toLowerCase()} $value    ${reactions[i].value}');
     if (reactions[i].value?.toLowerCase() == value.toLowerCase()) {
       res = i;
       return i;
@@ -181,99 +182,19 @@ List<Reaction<String>> getListSelectedReactions(List<LikeType> likes) {
   }
   return list;
 }
+List<Reaction<String>> getListSelectedReactionsss(List<ReactionResponse> likes) {
+  List<Reaction<String>> list = [];
+  for (int i = 0; i < reactions.length; i++) {
+    for (int j = 0; j < likes.length; j++) {
+      if (reactions[i].value?.toLowerCase() ==
+          likes[j].reactionType?.toLowerCase()) {
+        list.add(reactions[i]);
+      }
+    }
+  }
+  return list;
+}
 
-final List<Reaction<String>> reactionscomment = [
-  Reaction<String>(
-    value: 'Like',
-    title: _buildEmojiTitle(
-      'Like',
-    ),
-    previewIcon: _buildEmojiPreviewIcon(
-      AppImageAssets.like,
-    ),
-    icon: buildReactionsIcon(
-      AppImageAssets.like,
-      const Text(
-        'Like',
-        style: TextStyle(
-          color: Color(0XFF2196F3),
-        ),
-      ),
-    ),
-  ),
-  Reaction<String>(
-    value: 'In love',
-    title: _buildEmojiTitle(
-      'In love',
-    ),
-    previewIcon: _buildEmojiPreviewIcon(
-      AppImageAssets.love,
-    ),
-    icon: buildReactionsIcon(
-      AppImageAssets.love,
-      const Text(
-        'In love',
-        style: TextStyle(
-          color: Color(0XFFed5168),
-        ),
-      ),
-    ),
-  ),
-  Reaction<String>(
-    value: 'Haha',
-    title: _buildEmojiTitle(
-      'Haha',
-    ),
-    previewIcon: _buildEmojiPreviewIcon(
-      AppImageAssets.haha,
-    ),
-    icon: buildReactionsIcon(
-      AppImageAssets.haha,
-      const Text(
-        'Haha',
-        style: TextStyle(
-          color: Color(0XFF3b5998),
-        ),
-      ),
-    ),
-  ),
-  Reaction<String>(
-    value: 'Angry',
-    title: _buildEmojiTitle(
-      'Angry',
-    ),
-    previewIcon: _buildEmojiPreviewIcon(
-      AppImageAssets.angry,
-    ),
-    icon: buildReactionsIcon(
-      AppImageAssets.angry,
-      const Text(
-        'Angry',
-        style: TextStyle(
-          color: Color(0XFFed5168),
-        ),
-      ),
-    ),
-  ),
-  Reaction<String>(
-    value: 'Sad',
-    title: _buildEmojiTitle(
-      'Sad',
-    ),
-    previewIcon: _buildEmojiPreviewIcon(
-      AppImageAssets.sad,
-    ),
-    icon: buildReactionsIcon(
-      AppImageAssets.sad,
-      const Text(
-        'Sad',
-        style: TextStyle(
-          color: Color(0XFFffda6b),
-        ),
-      ),
-    ),
-  ),
-];
 
 Widget _buildEmojiTitle(String title) {
   return Container(

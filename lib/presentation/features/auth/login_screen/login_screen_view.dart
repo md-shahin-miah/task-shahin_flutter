@@ -201,7 +201,7 @@ class LoginScreenView extends ConsumerWidget {
 
                                     ToastService.showToast(title: "Password length must me 6", backgroundColor: AppColors.colorError);
                                   } else {
-                                    SharePreferenceUtil.setRememberMe(ref.read(rememberMeProvider));
+
                                     // ref
                                     //     .read(authProviderLogin.notifier)
                                     //     .login("stu@test.io", "123456");
@@ -233,6 +233,7 @@ class LoginScreenView extends ConsumerWidget {
     ref.listen<DataState>(authProviderLogin, (_, state) {
       state.maybeWhen(
         success: (user) {
+          SharePreferenceUtil.setRememberMe(ref.read(rememberMeProvider));
           context.goToHomePage();
         },
         error: (err, _) {
