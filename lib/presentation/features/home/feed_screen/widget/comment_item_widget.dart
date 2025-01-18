@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
@@ -40,8 +41,36 @@ class CommentItem extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(bottom: 25),
-                    child: CircleAvatar(radius: comment.replies.isNotEmpty ? 20 : 30),
+                    height: 60,
+                    width: 60,
+                    margin: EdgeInsets.only(bottom: 25),
+                    child: CachedNetworkImage(
+                      imageUrl:comment.user?.profilePic??"",
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(50),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      placeholder: (context, url) {
+                        return Image.asset(
+                          AppImageAssets.userAvatar,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        );
+                      },
+                      errorWidget: (context, url, error) {
+                        return Image.asset(
+                          AppImageAssets.userAvatar,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        );
+                      },
+                    ),
                   ),
                   Expanded(
                     child: Column(
@@ -119,7 +148,7 @@ class CommentItem extends ConsumerWidget {
                       shrinkWrap: true,
                       itemCount: replyData?.replyResponseList.length,
                       itemBuilder: (context, index) {
-                        return ReplyItem(comment: replyData!.replyResponseList[index]);
+                        return ReplyItem(reply: replyData!.replyResponseList[index]);
                       },
                     );
                   } else {

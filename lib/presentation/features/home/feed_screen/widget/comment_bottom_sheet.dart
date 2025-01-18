@@ -82,17 +82,32 @@ class CommentBottomSheet extends ConsumerWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: feedResponse?.likeCount != null
-                ? feedResponse!.likeCount! > 0
-                    ? SizedBox(
-                        height: 25,
-                        child: DynamicItemDisplay(
-                          reactions: getListSelectedReactions(feedResponse!.likeType),
-                          title: title,
-                        ),
-                      )
-                    : const SizedBox()
-                : const SizedBox(),
+            child: Consumer(
+              builder: (context, ref, child) {
+                return ref
+                    .watch(reactionFutureProvider(
+                    feedResponse!.id.toString()))
+                    .when(data: (data) {
+                  if (data?.reactions != null) {
+                    var tempText=data!.reactions.isNotEmpty?"${data.reactions.length} likes this ":"";
+                    return SizedBox(
+                      height: 25,
+                      child: DynamicItemDisplay(
+                          reactions: getListSelectedReactionsss(
+                              data.reactions),
+                          title: tempText),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }, error: (e, str) {
+                  return Container();
+                }, loading: () {
+                  return Container();
+                });
+              },
+            )
+
           ),
           const SizedBox(
             height: 15,

@@ -51,6 +51,7 @@ class AuthViewModel extends StateNotifier<DataState> {
     }
   }
 
+
   Future<void> logOut() async {
     state = const DataState.loading();
     try {

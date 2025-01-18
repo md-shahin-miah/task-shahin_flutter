@@ -22,7 +22,7 @@ class FeedScreenView extends ConsumerWidget {
     observers(ref, context);
 
     return RefreshIndicator(
-      color: Colors.white,
+      color: AppColors.primaryColor,
       onRefresh: () {
         return Future.delayed(
           const Duration(seconds: 1),
@@ -100,7 +100,7 @@ class FeedScreenView extends ConsumerWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         print("------------------item ->");
-                        return FeedItem(dataResponse.feedList[index]);
+                        return FeedItem(feedResponse:dataResponse.feedList[index]);
                       },
                     ),
                   ],
@@ -108,7 +108,7 @@ class FeedScreenView extends ConsumerWidget {
               ),
             );
           } else {
-            return const Center(child: Text("No Data Found"));
+            return const Center(child: Text("Something went wrong, No Data Found"));
           }
         }, error: (error, e) {
           return const Text("No data found");
@@ -126,8 +126,9 @@ class FeedScreenView extends ConsumerWidget {
       state.maybeWhen(
         success: (user) {
           print("-------createFeedStateNotifierProvider--------->");
-          ref.invalidate(feedFutureProvider);
-        },
+          ref.invalidate(reactionFutureProvider);
+
+          },
         error: (err, _) {
           debugPrint(err);
           ToastService.showToast(title: err, backgroundColor: AppColors.colorError);

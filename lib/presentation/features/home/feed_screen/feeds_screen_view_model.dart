@@ -24,7 +24,6 @@ final reactionFutureProvider = FutureProvider.family<ReactionResponseList?, Stri
 final replyFutureProvider = FutureProvider.family<ReplyResponseList?, String>((ref, String feedId) => ref.read(feedProvider).getReply(feedId));
 
 final feedProvider = Provider<FeedScreenViewModel>((ref) => FeedScreenViewModel(ref));
-final createFeedStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
 final createCommentStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
 final createReplyStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
 final createOrDeleteReactionStateNotifierProvider = StateNotifierProvider.autoDispose<FeedScreenViewModel, DataState>((ref) => FeedScreenViewModel(ref));
@@ -135,33 +134,6 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     return reactionResponseList;
   }
 
-  Future<void> createPost(CreatePostRequest createPostRequest) async {
-    state = const DataState.loading();
-    final result = await connectivity.checkConnectivity();
-
-    // FeedResponse? feedResponse;
-    try {
-      if (result == ConnectivityResult.none) {
-        state = const DataState.error(message: "No internet connection, please try again.");
-        throw Exception("No internet connection, please try again.");
-
-      } else {
-        var response = await ref.read(feedRepoProvider).createPost(createPostRequest);
-
-        if (response.statusCode == 200) {
-          var feedResponse = FeedResponse.fromJson(json.decode(response.body));
-
-          state = DataState.success(data: feedResponse);
-        } else {
-          state = const DataState.error(message: "Failed to create");
-        }
-      }
-    } on SocketException catch (e) {
-      state = DataState.error(message: 'Failed to load landing data: ${e.message}');
-
-      throw Exception('Failed to load landing data: ${e.message}');
-    }
-  }
 
   Future<void> createReply(CreateReplyRequest createReplyRequest) async {
     state = const DataState.loading();
@@ -187,31 +159,6 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
     }
   }
 
-  Future<void> logout(CreatePostRequest createPostRequest) async {
-    state = const DataState.loading();
-    final result = await connectivity.checkConnectivity();
-
-    try {
-      if (result == ConnectivityResult.none) {
-        state = const DataState.error(message: "No internet connection, please try again.");
-        throw Exception("No internet connection, please try again.");
-      } else {
-        var response = await ref.read(feedRepoProvider).createPost(createPostRequest);
-
-        if (response.statusCode == 200) {
-          var feedResponse = FeedResponse.fromJson(json.decode(response.body));
-
-          state = DataState.success(data: feedResponse);
-        } else {
-          state = const DataState.error(message: "Failed to create");
-        }
-      }
-    } on SocketException catch (e) {
-      state = DataState.error(message: 'Failed to load landing data: ${e.message}');
-
-      throw Exception('Failed to load landing data: ${e.message}');
-    }
-  }
 
   Future<void> createOrDeleteReaction(CreateOrDeleteReactionRequest createOrDeleteReactionRequest) async {
     state = const DataState.loading();

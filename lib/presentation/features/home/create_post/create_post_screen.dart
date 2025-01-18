@@ -4,6 +4,7 @@ import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
 import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
+import 'package:shahin_appify_task/presentation/features/home/create_post/create_post_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/create_post/widget/gradient_color_selector.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 
@@ -49,31 +50,27 @@ class CreatePostScreen extends ConsumerWidget {
                       .maybeWhen(orElse: () {
                     return TextButton(
                       onPressed: () {
-
-                        if(_textController.text.isNotEmpty){
+                        if (_textController.text.isNotEmpty) {
                           ref
                               .read(createFeedStateNotifierProvider.notifier)
                               .createPost(CreatePostRequest(
-                              community_id: "2914",
-                              space_id: "5883",
-                              activity_type: "group",
-                              bg_color: ref.read(selectedGradiant) > 0
-                                  ? ColorConstantLinear
-                                  .feedBackGroundGradientColors[
-                              ref.read(selectedGradiant)]
-                                  : "",
-                              feed_txt: _textController.text,
-                              is_background:
-                              ref.read(selectedGradiant) > 0 ? 1 : 0,
-                              uploadType: "text"));
+                                  community_id: "2914",
+                                  space_id: "5883",
+                                  activity_type: "group",
+                                  bg_color: ref.read(selectedGradiant) > 0
+                                      ? ColorConstantLinear
+                                              .feedBackGroundGradientColors[
+                                          ref.read(selectedGradiant)]
+                                      : "",
+                                  feed_txt: _textController.text,
+                                  is_background:
+                                      ref.read(selectedGradiant) > 0 ? 1 : 0,
+                                  uploadType: "text"));
+                        } else {
+                          ToastService.showToast(
+                              title: "Text required",
+                              backgroundColor: AppColors.colorError);
                         }
-                        else{
-                          ToastService.showToast(title: "Text required", backgroundColor: AppColors.colorError);
-
-
-                        }
-
-
                       },
                       child: const Text(
                         "Create",
@@ -110,7 +107,6 @@ class CreatePostScreen extends ConsumerWidget {
               width: MediaQuery.of(context).size.width,
               child: GradientColorSelector(
                 gradients: ColorConstantLinear.gradientsColor,
-
                 onToggleList: () {},
               ),
             ),
@@ -130,13 +126,11 @@ class CreatePostScreen extends ConsumerWidget {
         },
         error: (err, _) {
           debugPrint(err);
-          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
-
+          ToastService.showToast(
+              title: err, backgroundColor: AppColors.colorError);
         },
         orElse: () {},
       );
     });
   }
 }
-
-

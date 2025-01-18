@@ -6,26 +6,23 @@ import 'package:linkfy_text/linkfy_text.dart';
 import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/core/constants/image_assets.dart';
 import 'package:shahin_appify_task/core/utils/utils.dart';
-import 'package:shahin_appify_task/domain/model/common/meta_data.dart';
 import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
-import 'package:shahin_appify_task/domain/model/feed/like.dart';
 import 'package:shahin_appify_task/domain/model/feed/like_type.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/horizontal_reaction_list.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/reaction_button_widget.dart';
 import '../../../../../core/themes/styles/app_colors.dart';
-import '../../../../../data/network/models/network_request/create_delete_reaction_request.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../widgets/button/reactions.dart';
-import '../feeds_screen_view_model.dart';
 
 final stateChangeCheck = StateProvider((ref) => 0);
 
 class FeedItem extends StatelessWidget {
-  final FeedResponse feedResponse;
-  Reaction<String>? reactionCu;
+  FeedResponse feedResponse;
 
-  FeedItem(this.feedResponse, {super.key});
+  FeedItem({super.key, required this.feedResponse});
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +30,7 @@ class FeedItem extends StatelessWidget {
     final timeAgo = timeago.format(dateTime);
     var like = feedResponse.like?.reactionType ?? "";
     var selectedIndexReact = getSelectedIndex(like ?? "");
-    print("---------dsdsds ---->$selectedIndexReact  ${feedResponse.likeType.length}");
-    var youTxt = selectedIndexReact.isNegative
-        ? "${feedResponse.likeType.length} likes this"
-        : feedResponse.likeType.length > 1
-            ? "You and ${feedResponse.likeType.length} other"
-            : "You likes this";
-    print("---------youTxt ---->${youTxt}  ${feedResponse.id}");
+
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
@@ -53,11 +44,39 @@ class FeedItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage(AppImageAssets.userAvatar),
+
+                SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: CachedNetworkImage(
+                    imageUrl:feedResponse.user?.profilePic??"",
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(50),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) {
+                      return Image.asset(
+                        AppImageAssets.userAvatar,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Image.asset(
+                        AppImageAssets.userAvatar,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      );
+                    },
+                  ),
                 ),
+
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +91,8 @@ class FeedItem extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(
                       timeAgo,
-                      style: TextStyle(fontSize: 12, color: AppColors.textColorGray),
+                      style: TextStyle(
+                          fontSize: 12, color: AppColors.textColorGray),
                     ),
                   ],
                 ),
@@ -88,7 +108,11 @@ class FeedItem extends StatelessWidget {
             ),
             const SizedBox(height: 5),
 
-            feedResponse.isBackground == 0 ? Container(margin: const EdgeInsets.only(top: 2), child: textFeed(feedResponse)) : const SizedBox(),
+            feedResponse.isBackground == 0
+                ? Container(
+                    margin: const EdgeInsets.only(top: 2),
+                    child: textFeed(feedResponse))
+                : const SizedBox(),
             const SizedBox(height: 10),
             // Example image for alternating items
             Container(
@@ -97,8 +121,12 @@ class FeedItem extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 gradient: feedResponse.isBackground == 1
-                    ? ColorConstantLinear.findIndex(feedResponse.bgColor ?? "") != -1
-                        ? ColorConstantLinear.gradientsColor[ColorConstantLinear.findIndex(feedResponse.bgColor ?? "")]
+                    ? ColorConstantLinear.findIndex(
+                                feedResponse.bgColor ?? "") !=
+                            -1
+                        ? ColorConstantLinear.gradientsColor[
+                            ColorConstantLinear.findIndex(
+                                feedResponse.bgColor ?? "")]
                         : null
                     : null,
               ),
@@ -125,12 +153,31 @@ class FeedItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      feedResponse.likeType.isNotEmpty
-                          ? SizedBox(
-                              height: 25,
-                              child: DynamicItemDisplay(reactions: getListSelectedReactions(feedResponse.likeType), title: youTxt),
-                            )
-                          : const SizedBox(),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          return ref
+                              .watch(reactionFutureProvider(
+                                  feedResponse.id.toString()))
+                              .when(data: (data) {
+                            if (data?.reactions != null) {
+                              var tempText=data!.reactions.isNotEmpty?"${data.reactions.length} likes this ":"";
+                              return SizedBox(
+                                height: 25,
+                                child: DynamicItemDisplay(
+                                    reactions: getListSelectedReactionsss(
+                                        data!.reactions),
+                                    title: tempText),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }, error: (e, str) {
+                            return Container();
+                          }, loading: () {
+                            return Container();
+                          });
+                        },
+                      )
                     ],
                   ),
                   buildReactionsIcon(
@@ -152,56 +199,10 @@ class FeedItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Consumer(builder: (context, ref, child) {
-                    var likeTemp = feedResponse.like?.reactionType ?? "";
-                    var selectedIndexReactTemp = getSelectedIndex(likeTemp ?? "");
-                    print("------dd------->$likeTemp ---> ${feedResponse.id}  $selectedIndexReactTemp  $likeTemp");
-
-                    if (selectedIndexReactTemp > -1) {
-                      reactionCu = reactions.elementAt(selectedIndexReactTemp);
-                    } else {
-                      reactionCu = null;
-                    }
-
-                    final val = reactionCu != null ? reactionCu! : defaultInitiaCommentReaction;
-
-                    print("----react val -----${val.value}---- ${feedResponse.id} >  ${val.value != null}");
-
-                    return ReactionButton<String>(
-                      itemSize: const Size.square(40),
-                      onReactionChanged: (Reaction<String>? reaction) {
-                        var value = reaction?.value;
-
-                        print(
-                            "---------reaction-----start----->${Utils.equalsIgnoreCase(feedResponse.like?.reactionType, value)}    ${feedResponse.like?.reactionType} --> $value   ${feedResponse.id}");
-                        if (feedResponse.like != null && feedResponse.like?.reactionType != null && (value == null || Utils.equalsIgnoreCase(feedResponse.like?.reactionType, value))) {
-                          value = feedResponse.like?.reactionType;
-                          // feedResponse.like == null;
-                        } else {
-                          value ??= feedResponse.like?.reactionType;
-                          value ??= "Like";
-                          feedResponse.like = Like(
-                              reactionType: value.toUpperCase(),
-                              id: 0,
-                              createdAt: DateTime.now(),
-                              feedId: feedResponse.id,
-                              updatedAt: DateTime.now(),
-                              meta: MetaDataClass(json: {}),
-                              userId: feedResponse.userId,
-                              isAnonymous: 0);
-
-                        }
-
-                        ref.read(createOrDeleteReactionStateNotifierProvider.notifier).createOrDeleteReaction(
-                            CreateOrDeleteReactionRequest(feed_id: feedResponse.id.toString(), action: "deleteOrCreate", reaction_type: value?.toUpperCase(), reactionSource: "COMMUNITY"));
-                      },
-                      reactions: reactions,
-                      isChecked: true,
-                      selectedReaction: val.value != null ? val : defaultInitiaCommentReaction,
-                      placeholder: defaultInitiaCommentReaction,
-                    );
-                  }),
+                  height: 40,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ReactionButtonWidget(feedResponse: feedResponse),
                 ),
                 Consumer(
                   builder: (context, ref, child) => InkWell(
@@ -210,7 +211,8 @@ class FeedItem extends StatelessWidget {
                       controllerComment.text = "";
                       controllerReply.text = "";
                       ref.invalidate(selectedReplyIndex);
-                      showCommentBottomSheet(context, feedResponse, youTxt, selectedIndexReact);
+                      showCommentBottomSheet(
+                          context, feedResponse, "youTxt", selectedIndexReact);
                     },
                     child: buildReactionsIcon(
                       AppImageAssets.commentFilled,
@@ -248,3 +250,4 @@ class FeedItem extends StatelessWidget {
     return likeTypes.map((item) => item.reactionType).contains(reaction);
   }
 }
+
