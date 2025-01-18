@@ -5,7 +5,6 @@ import 'package:shahin_appify_task/core/routes/app_router.dart';
 import 'package:shahin_appify_task/core/themes/themes.dart';
 import 'package:shahin_appify_task/core/utils/device_info/device_info_service.dart';
 import 'package:shahin_appify_task/core/utils/logger/providers_logger.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -16,8 +15,7 @@ Future<void> main() async {
   try {
     await SharePreferenceUtil.init();
     timeago.setLocaleMessages('en', timeago.EnMessages());
-    final deviceInfoService = DeviceInfoService();
-    await deviceInfoService.initProperInfo();
+
     runApp(
       ProviderScope(
         observers: [ProvidersLogger()],
