@@ -27,15 +27,17 @@ class FeedScreenView extends ConsumerWidget {
         return Future.delayed(
           const Duration(seconds: 1),
           () {
-            ref.invalidate(feedFutureProvider);
-            ref.invalidate(replyFutureProvider);
-            ref.invalidate(commentFutureProvider);
-            controllerComment.text = "";
+            print("------dddd---RefreshIndicator--->");
+
+            invalidateData(ref);
           },
         );
       },
       child: Scaffold(
-        body: ref.watch(feedFutureProvider(FeedRequest(space_id: "5883", community_id: "2914", more: " "))).when(data: (data) {
+        body: ref
+            .watch(feedFutureProvider(
+                FeedRequest(space_id: "5883", community_id: "2914", more: " ")))
+            .when(data: (data) {
           FeedResponseList? dataResponse = data;
 
           if (dataResponse != null) {
@@ -49,7 +51,8 @@ class FeedScreenView extends ConsumerWidget {
                         context.goToCreatePost();
                       },
                       child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
                         padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
                           color: AppColors.white,
@@ -69,7 +72,9 @@ class FeedScreenView extends ConsumerWidget {
                               width: 60,
                               height: 60,
                               decoration: const BoxDecoration(
-                                image: DecorationImage(image: AssetImage(AppImageAssets.userImage)),
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage(AppImageAssets.userImage)),
                               ),
                             ),
                             const Expanded(
@@ -100,7 +105,8 @@ class FeedScreenView extends ConsumerWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         print("------------------item ->");
-                        return FeedItem(feedResponse:dataResponse.feedList[index]);
+                        return FeedItem(
+                            feedResponse: dataResponse.feedList[index]);
                       },
                     ),
                   ],
@@ -108,33 +114,60 @@ class FeedScreenView extends ConsumerWidget {
               ),
             );
           } else {
-            return const Center(child: Text("Something went wrong, No Data Found"));
+            return const Center(
+                child: Text("Something went wrong, No Data Found"));
           }
         }, error: (error, e) {
-          return const Text("No data found");
+          return SizedBox(
+            height: MediaQuery.of(context).size.height-100,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      invalidateData(ref);
+                    },
+                    child: Text("Retry"),
+                  ),
+                  const Text("No data found"),
+                ],
+              ),
+            ),
+          );
+
           // }
         }, loading: () {
           return const FeedShimmer();
-
         }),
       ),
     );
   }
 
   void observers(WidgetRef ref, BuildContext context) {
-    ref.listen<DataState>(createOrDeleteReactionStateNotifierProvider, (_, state) {
+    ref.listen<DataState>(createOrDeleteReactionStateNotifierProvider,
+        (_, state) {
       state.maybeWhen(
         success: (user) {
-          print("-------createFeedStateNotifierProvider--------->");
           ref.invalidate(reactionFutureProvider);
-
-          },
+        },
         error: (err, _) {
           debugPrint(err);
-          ToastService.showToast(title: err, backgroundColor: AppColors.colorError);
+          ToastService.showToast(
+              title: err, backgroundColor: AppColors.colorError);
         },
         orElse: () {},
       );
     });
+  }
+
+  void invalidateData(WidgetRef ref) {
+    ref.invalidate(feedFutureProvider);
+    ref.invalidate(replyFutureProvider);
+    ref.invalidate(commentFutureProvider);
+    ref.invalidate(reactionFutureProvider);
+    controllerComment.text = "";
   }
 }

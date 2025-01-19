@@ -63,14 +63,14 @@ class FeedItem extends StatelessWidget {
                     placeholder: (context, url) {
                       return Image.asset(
                         AppImageAssets.userAvatar,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                         width: double.infinity,
                       );
                     },
                     errorWidget: (context, url, error) {
                       return Image.asset(
                         AppImageAssets.userAvatar,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                         width: double.infinity,
                       );
                     },

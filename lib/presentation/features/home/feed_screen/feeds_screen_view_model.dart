@@ -39,6 +39,7 @@ class FeedScreenViewModel extends StateNotifier<DataState> {
 
     FeedResponseList? feedResponseList;
     try {
+      print("---------connectivity---->${result}");
       if (result == ConnectivityResult.none) {
         state = const DataState.error(message: "No internet connection, please try again.");
         throw Exception("No internet connection, please try again.");

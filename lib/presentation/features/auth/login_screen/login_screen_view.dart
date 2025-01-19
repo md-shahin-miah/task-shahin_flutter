@@ -8,6 +8,8 @@ import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
+import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
 import '../../../widgets/text_field/custom_text_field.dart';
 import '../../../widgets/loader/loading_widget.dart';
 
@@ -233,7 +235,15 @@ class LoginScreenView extends ConsumerWidget {
     ref.listen<DataState>(authProviderLogin, (_, state) {
       state.maybeWhen(
         success: (user) {
+          ref.invalidate(feedFutureProvider);
+          ref.invalidate(replyFutureProvider);
+          ref.invalidate(commentFutureProvider);
+          ref.invalidate(reactionFutureProvider);
+          ref.invalidate(feedProvider);
+          SharePreferenceUtil.setRememberMe(false);
+          controllerComment.text = "";
           SharePreferenceUtil.setRememberMe(ref.read(rememberMeProvider));
+          ref.invalidate(rememberMeProvider);
           context.goToHomePage();
         },
         error: (err, _) {
