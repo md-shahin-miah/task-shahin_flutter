@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shahin_appify_task/core/routes/app_router.dart';
 import 'package:shahin_appify_task/core/themes/themes.dart';
-import 'package:shahin_appify_task/core/utils/device_info/device_info_service.dart';
 import 'package:shahin_appify_task/core/utils/logger/providers_logger.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -19,7 +18,7 @@ Future<void> main() async {
     runApp(
       ProviderScope(
         observers: [ProvidersLogger()],
-        overrides: [
+        overrides: const [
         ],
         child: const MyApp(),
       ),

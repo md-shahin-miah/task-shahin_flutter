@@ -9,6 +9,5 @@ class DataState<T> with _$DataState<T> {
   const factory DataState.success({required T data}) = _Success;
   const factory DataState.error({
     required String message
-
   }) = _Error;
 }
