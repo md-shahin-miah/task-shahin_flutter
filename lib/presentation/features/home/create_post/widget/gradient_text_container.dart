@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
+import 'package:shahin_appify_task/common/constants/color_constant_linear.dart';
 import 'package:shahin_appify_task/presentation/features/home/create_post/create_post_screen.dart';
 
 class GradientTextContainer extends StatelessWidget {
@@ -8,7 +8,7 @@ class GradientTextContainer extends StatelessWidget {
   final TextAlign textAlign;
   final FontWeight fontWeight;
 
-  const GradientTextContainer({
+  const GradientTextContainer({super.key,
     required this.controller,
     required this.textAlign,
     required this.fontWeight,

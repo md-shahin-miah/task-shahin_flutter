@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/constants/app_constant.dart';
+import '../../common/constants/app_constant.dart';
+
 
 
 class SharePreferenceUtil {
@@ -93,60 +94,6 @@ class SharePreferenceUtil {
     setBool(AppConstant.remember, value);
   }
 
-  //
-  // static getUserId() {
-  //   return getString(AppConstant.userId, def: "");
-  // }
-  //
-  // static void setUserId(String value) {
-  //   setString(AppConstant.userId, value);
-  // }
-  //
-  // static getCategoryId() {
-  //   return getString(AppConstant.selectedCategoryId, def: "");
-  // }
-  //
-  // static void setCategoryId(String value) {
-  //   setString(AppConstant.selectedCategoryId, value);
-  // }
-  //
-  // static isUserLoggedIn() {
-  //   return getBool(AppConstant.loginKey, def: false);
-  // }
-  //
-  // static void setIsUserLoggedIn(bool value) {
-  //   setBool(AppConstant.loginKey, value);
-  // }
-  //
-  // static isOnBoardingScreenDone() {
-  //   return getBool(AppConstant.isOnBoarding, def: false);
-  // }
-  //
-  // static void setOnBoardingScreenDone(bool value) {
-  //   setBool(AppConstant.isOnBoarding, value);
-  // }
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  // // save device token in shared preference
-  // static void saveDeviceToken(String? deviceToken) {
-  //   setString("deviceToken", deviceToken??"");
-  // }
-  //
-  // // get device token from shared preference
-  // static String getDeviceToken() {
-  //   return getString("deviceToken", def: "");
-  // }
 
 
 }

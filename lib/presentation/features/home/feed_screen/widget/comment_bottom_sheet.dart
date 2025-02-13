@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_comment_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/comment_response_list.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
@@ -13,6 +10,9 @@ import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget
 import 'package:shahin_appify_task/presentation/widgets/shimmer/comment_shimmer.dart';
 import 'package:shahin_appify_task/presentation/widgets/text_field/custom_text_field.dart';
 
+import '../../../../../common/constants/image_assets.dart';
+import '../../../../../common/themes/styles/app_colors.dart';
+import '../../../../../common/utils/snackbar/snackbar_service.dart';
 import '../../../../widgets/button/reactions.dart';
 
 final controllerComment = TextEditingController();

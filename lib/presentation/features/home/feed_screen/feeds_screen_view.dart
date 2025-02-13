@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
+import 'package:shahin_appify_task/common/routes/go_route_context_extension.dart';
+import 'package:shahin_appify_task/common/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/feed_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/feed_response.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
@@ -12,6 +10,8 @@ import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/feed_item.dart';
 import 'package:shahin_appify_task/presentation/widgets/button/custom_button.dart';
 import 'package:shahin_appify_task/presentation/widgets/shimmer/feed_shimmer.dart';
+import '../../../../common/constants/image_assets.dart';
+import '../../../../common/utils/snackbar/snackbar_service.dart';
 import 'widget/comment_bottom_sheet.dart';
 
 class FeedScreenView extends ConsumerWidget {

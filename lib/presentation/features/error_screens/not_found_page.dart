@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_text_styles.dart';
+import 'package:shahin_appify_task/common/themes/styles/app_text_styles.dart';
 import 'package:shahin_appify_task/presentation/widgets/button/custom_secondary_button.dart';
 
 class NotFoundPage extends StatelessWidget {

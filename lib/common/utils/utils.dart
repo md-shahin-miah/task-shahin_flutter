@@ -1,8 +1,9 @@
 
 import 'dart:math';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
+import 'package:shahin_appify_task/common/utils/snackbar/snackbar_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../themes/styles/app_colors.dart';
 
 
 class Utils{

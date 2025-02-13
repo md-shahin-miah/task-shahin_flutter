@@ -3,19 +3,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart';
-import 'package:shahin_appify_task/core/constants/app_constant.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
+import 'package:shahin_appify_task/common/constants/app_constant.dart';
+import 'package:shahin_appify_task/common/constants/image_assets.dart';
+import 'package:shahin_appify_task/common/themes/styles/app_colors.dart';
+import 'package:shahin_appify_task/common/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/providers/navigation_provider.dart';
-import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/home_sreen/widget/logout_dialog.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view.dart';
-import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
-import 'package:swipe_refresh/swipe_refresh.dart';
 
-import '../feed_screen/widget/comment_bottom_sheet.dart';
 
 final selectedTabIndex = StateProvider((ref) => 0);
 
@@ -66,7 +61,7 @@ class HomeScreenView extends ConsumerWidget {
               onPageChanged: (value) {
                 print("-----------> $value");
               },
-              children: [
+              children: const [
                 FeedScreenView(),
               ],
             ),
@@ -112,7 +107,7 @@ class HomeScreenView extends ConsumerWidget {
   Future<bool> exiteApp() {
     print("exite app");
     DateTime now = DateTime.now();
-    if(now.difference(BackPressTime)< Duration(seconds: 2)){
+    if(now.difference(BackPressTime)< const Duration(seconds: 2)){
       return Future(() => true);
     }
     else{

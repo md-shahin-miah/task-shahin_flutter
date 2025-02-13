@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_reply_request.dart';
 import 'package:shahin_appify_task/domain/model/comments/comment_response.dart';
 import 'package:shahin_appify_task/data/network/models/network_response/reply_response.dart';
@@ -13,10 +11,12 @@ import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
 import 'package:shahin_appify_task/presentation/widgets/button/reactions.dart';
-import 'package:shahin_appify_task/presentation/widgets/shimmer/comment_shimmer.dart';
 import 'package:shahin_appify_task/presentation/widgets/shimmer/reply_shimmer.dart';
 import 'package:shahin_appify_task/presentation/widgets/text_field/custom_text_field.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../../../../../common/constants/image_assets.dart';
+import '../../../../../common/themes/styles/app_colors.dart';
 
 class CommentItem extends ConsumerWidget {
   final CommentResponse comment;

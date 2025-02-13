@@ -5,11 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
-import 'package:shahin_appify_task/core/constants/end_points.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
-import 'package:shahin_appify_task/core/utils/utils.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
+
+import '../../common/constants/end_points.dart';
+import '../../common/themes/styles/app_colors.dart';
+import '../../common/utils/snackbar/snackbar_service.dart';
+import '../../common/utils/utils.dart';
 
 
 

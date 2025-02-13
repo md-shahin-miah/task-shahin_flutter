@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
-
-import '../../../../../core/utils/utils.dart';
+import '../../../../../common/utils/utils.dart';
 import '../../../../../data/network/models/network_request/create_delete_reaction_request.dart';
 import '../../../../../domain/model/common/meta_data.dart';
 import '../../../../../domain/model/feed/like.dart';

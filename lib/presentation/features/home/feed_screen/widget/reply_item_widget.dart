@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/data/network/models/network_request/create_reply_request.dart';
 import 'package:shahin_appify_task/domain/model/reply/reply_response.dart';
-import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
-import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../../../../../common/constants/image_assets.dart';
+import '../../../../../common/themes/styles/app_colors.dart';
 
 class ReplyItem extends ConsumerWidget {
   final ReplyResponse reply;

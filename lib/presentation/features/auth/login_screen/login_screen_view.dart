@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
+import 'package:shahin_appify_task/common/routes/go_route_context_extension.dart';
+import 'package:shahin_appify_task/common/utils/snackbar/snackbar_service.dart';
 import 'package:shahin_appify_task/data/share_preference/shared_preference_service.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/auth/login_screen/login_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/widget/comment_bottom_sheet.dart';
+import '../../../../common/constants/image_assets.dart';
+import '../../../../common/themes/styles/app_colors.dart';
 import '../../../widgets/text_field/custom_text_field.dart';
 import '../../../widgets/loader/loading_widget.dart';
 
@@ -51,7 +51,7 @@ class LoginScreenView extends ConsumerWidget {
                       children: [
                         Expanded(
                             flex: 2,
-                            child: Container(
+                            child: SizedBox(
                               width: size.width,
                               child: Image.asset(
                                 AppImageAssets.topCircle,
@@ -61,7 +61,7 @@ class LoginScreenView extends ConsumerWidget {
                             )),
                         Expanded(
                             flex: 2,
-                            child: Container(
+                            child: SizedBox(
                               width: size.width,
                               child: Image.asset(
                                 AppImageAssets.centreCircle,

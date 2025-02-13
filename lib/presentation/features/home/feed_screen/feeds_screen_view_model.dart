@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/utils/utils.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_comment_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_delete_reaction_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_post_request.dart';
@@ -16,6 +15,7 @@ import 'package:shahin_appify_task/data/repository/feed_repository_impl.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/domain/model/feed/feed_response.dart';
 
+import '../../../../common/utils/utils.dart';
 import '../../../../data/network/models/network_response/comment_response_list.dart';
 
 final feedFutureProvider = FutureProvider.family<FeedResponseList?, FeedRequest>((ref, FeedRequest locationQueryModel) => ref.read(feedProvider).getFeedData(locationQueryModel));

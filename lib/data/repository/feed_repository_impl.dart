@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
-import 'package:shahin_appify_task/core/constants/end_points.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_comment_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_delete_reaction_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_post_request.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/create_reply_request.dart';
+import '../../common/constants/end_points.dart';
 import '../../domain/repository/feed_repository.dart';
 import '../network/models/network_request/feed_request.dart';
 import '../network/network_service.dart';

@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
-import 'package:shahin_appify_task/core/constants/end_points.dart';
 import 'package:shahin_appify_task/data/network/models/network_request/login_request.dart';
 import 'package:shahin_appify_task/data/network/network_service.dart';
 import 'package:shahin_appify_task/domain/repository/auth_repository.dart';
+
+import '../../common/constants/end_points.dart';
 
 
 final authRepoProvider = Provider((ref) => AuthRepositoryImpl());

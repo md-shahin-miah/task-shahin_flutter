@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_text_styles.dart';
+import 'package:shahin_appify_task/common/themes/styles/app_colors.dart';
+import 'styles/app_text_styles.dart';
 
 
 

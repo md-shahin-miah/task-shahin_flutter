@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_shadows.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_text_styles.dart';
+import '../../../common/themes/styles/app_colors.dart';
+import '../../../common/themes/styles/app_shadows.dart';
+import '../../../common/themes/styles/app_text_styles.dart';
 
 class CustomSecondaryButton {
   static Widget secondary({

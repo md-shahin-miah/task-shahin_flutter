@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
-import 'package:shahin_appify_task/core/constants/image_assets.dart';
-import 'package:shahin_appify_task/core/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/domain/model/feed/like_type.dart';
 import 'package:shahin_appify_task/domain/model/feed/reaction_response.dart';
+
+import '../../../common/constants/image_assets.dart';
+import '../../../common/themes/styles/app_colors.dart';
 
 final defaultInitialReaction = Reaction<String>(
   value: null,

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shahin_appify_task/core/constants/color_constant_linear.dart';
-import 'package:shahin_appify_task/core/routes/go_route_context_extension.dart';
-import 'package:shahin_appify_task/core/utils/snackbar/snackbar_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shahin_appify_task/common/themes/styles/app_colors.dart';
 import 'package:shahin_appify_task/data/state/data_state.dart';
 import 'package:shahin_appify_task/presentation/features/home/create_post/create_post_view_model.dart';
 import 'package:shahin_appify_task/presentation/features/home/create_post/widget/gradient_color_selector.dart';
 import 'package:shahin_appify_task/presentation/features/home/feed_screen/feeds_screen_view_model.dart';
 
+import '../../../../common/constants/color_constant_linear.dart';
+import '../../../../common/utils/snackbar/snackbar_service.dart';
 import '../../../../core/themes/styles/app_colors.dart';
 import '../../../../data/network/models/network_request/create_post_request.dart';
 import 'widget/gradient_text_container.dart';
@@ -19,6 +20,8 @@ class CreatePostScreen extends ConsumerWidget {
 
   final TextAlign _textAlign = TextAlign.start;
   final FontWeight _fontWeight = FontWeight.normal;
+
+  CreatePostScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,7 +87,7 @@ class CreatePostScreen extends ConsumerWidget {
                     return Container(
                         height: 20,
                         width: 20,
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         child:
                             const CircularProgressIndicator(color: Colors.red));
                   })),
